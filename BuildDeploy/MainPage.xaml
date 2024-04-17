@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="BuildDeploy.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:io="clr-namespace:System.IO;assembly=mscorlib"
+    xmlns:viewModels="using:BuildDeploy.ViewModels"
+    xmlns:syncfusion="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    x:DataType="viewModels:MainPageViewModel"
+    Appearing="MainPage_OnAppearing"
+    x:Name="Home">
+    <Grid ColumnDefinitions="2*, 8*">
+        <CollectionView Header="{Binding Projects.Count, StringFormat='Trovati {0} progetti in questo percorso'}" 
+                        ItemsSource="{Binding Projects}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="io:FileInfo">
+                    <Label Text="{Binding Name}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:MainPageViewModel}}, Path=OpenProjectCommand}" 
+                                                  CommandParameter="{Binding .}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Grid Grid.Column="1" RowDefinitions="50,*">
+            <Grid ColumnDefinitions="6*,4*" ColumnSpacing="15">
+                <Entry Text="{Binding ProjectPath}" TextChanged="InputView_OnTextChanged" />
+                <material:CheckBox Text="Vedi le cartelle" IsChecked="{Binding ShowDirectories}" 
+                                   CheckChanged="CheckBox_OnCheckChanged" Grid.Column="1" />
+                <!--<StackLayout Grid.Column="1">
+                    <buttons:SfCheckBox IsChecked="{Binding ShowDirectories}" 
+                                        Text="Vedi le cartelle" StateChanged="ToggleButton_OnStateChanged"
+                                        CheckedColor="Blue" TextColor="White" />
+                    
+                </StackLayout>-->
+            </Grid>
+            <!--<CollectionView ItemsSource="{Binding ProjectFiles}" Grid.Row="1"
+                            >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="io:FileInfo">
+                        <Grid ColumnDefinitions="*,*,*">
+                            <Label Text="{Binding Name}"/>
+                            <Label Text="{Binding Length}" Grid.Column="1"/>
+                            <Label Text="{Binding LastWriteTime}" Grid.Column="2"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>-->
+            <syncfusion:SfDataGrid ItemsSource="{Binding ProjectFiles}" Grid.Row="1"
+                                   ColumnWidthMode="Fill"
+                                   AutoGenerateColumnsMode="None"
+                                   SortingMode="Single"
+                                   x:Name="projectFiles">
+                <syncfusion:SfDataGrid.DefaultStyle>
+                    <syncfusion:DataGridStyle HeaderRowBackground="#202020" 
+                                              HeaderRowTextColor="White" 
+                                              RowBackground="#202020" RowTextColor="White"/>
+                </syncfusion:SfDataGrid.DefaultStyle>
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:DataGridCheckBoxColumn HeaderText="Seleziona" MappingName="IsSelected"/>
+                    <syncfusion:DataGridTextColumn HeaderText="Nome" MappingName="Name"/>
+                    <syncfusion:DataGridTextColumn HeaderText="Dimensioni" MappingName="Size"/>
+                    <syncfusion:DataGridDateColumn HeaderText="Ultima modifica" MappingName="LastModified"/>
+                    <syncfusion:DataGridTextColumn HeaderText="Tipo" MappingName="Tipo"/>
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+        </Grid>
+    </Grid>
+</ContentPage>
