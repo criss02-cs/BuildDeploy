@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using BuildDeploy.Database;
+using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Core.Hosting;
 using UraniumUI;
 
@@ -19,6 +20,9 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
+
+
+        builder.Services.AddSingleton<DbService>();
 
 #if DEBUG
         builder.Logging.AddDebug();

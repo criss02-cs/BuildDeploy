@@ -6,7 +6,8 @@ public partial class AppShell : Shell
 {
     public AppShell()
     {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        Routing.RegisterRoute(nameof(ProjectListView), typeof(ProjectListView));
+    }
 
 }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BuildDeploy.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -63,13 +64,15 @@ public partial class SplashScreenViewModel : BaseViewModel
 
     private static void GoToMainPage()
     {
-        var window = new Window(new MainPage())
-        {
-            Y = (DeviceDisplay.MainDisplayInfo.Height - 768) / 2,
-            X = (DeviceDisplay.MainDisplayInfo.Width - 1366) / 2,
-            Title = "Build and Deploy"
-        };
-        Application.Current?.OpenWindow(window);
+        Shell.Current.GoToAsync(nameof(ProjectListView));
+
+        //var window = new Window(new MainPage())
+        //{
+        //    Y = (DeviceDisplay.MainDisplayInfo.Height - 768) / 2,
+        //    X = (DeviceDisplay.MainDisplayInfo.Width - 1366) / 2,
+        //    Title = "Build and Deploy"
+        //};
+        //Application.Current?.OpenWindow(window);
     }
 
     private static bool CheckDotNetInPath()

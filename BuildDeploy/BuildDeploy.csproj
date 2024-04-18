@@ -81,6 +81,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<MauiXaml Update="Views\ProjectListView.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
 		<MauiXaml Update="Views\SplashScreenView.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
