@@ -64,15 +64,19 @@ public partial class SplashScreenViewModel : BaseViewModel
 
     private static void GoToMainPage()
     {
+        var window = Application.Current?.Windows[0];
+        if (window is not null)
+        {
+            window.Height = 675;
+            window.MinimumHeight = 675;
+            window.MaximumHeight = 675;
+            window.Width = 1018;
+            window.MinimumWidth = 1018;
+            window.MaximumWidth = 1018;
+            window.Y = (DeviceDisplay.MainDisplayInfo.Height - 675) / 2;
+            window.X = (DeviceDisplay.MainDisplayInfo.Width - 1018) / 2;
+        }
         Shell.Current.GoToAsync(nameof(ProjectListView));
-
-        //var window = new Window(new MainPage())
-        //{
-        //    Y = (DeviceDisplay.MainDisplayInfo.Height - 768) / 2,
-        //    X = (DeviceDisplay.MainDisplayInfo.Width - 1366) / 2,
-        //    Title = "Build and Deploy"
-        //};
-        //Application.Current?.OpenWindow(window);
     }
 
     private static bool CheckDotNetInPath()

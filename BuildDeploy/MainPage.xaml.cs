@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
+using BuildDeploy.Messages;
 using BuildDeploy.Models;
 using BuildDeploy.ViewModels;
 using BuildDeploy.Views;
+using CommunityToolkit.Mvvm.Messaging;
 using Syncfusion.Maui.Buttons;
 using FileInfo = BuildDeploy.Models.FileInfo;
 
@@ -22,18 +24,7 @@ public partial class MainPage : ContentPage
 
     private void MainPage_OnAppearing(object? sender, EventArgs e)
     {
-        Task.Run(() =>
-        {
-            var splashWindow =
-                Application.Current?.Windows.FirstOrDefault(x =>
-                    (x.Page as AppShell)?.CurrentPage is SplashScreenView);
-            if (splashWindow is not null)
-            {
-                MainThread.BeginInvokeOnMainThread(() => Application.Current?.CloseWindow(splashWindow));
-            }
-        });
-        if(BindingContext is not MainPageViewModel vm) return;
-        vm.LoadProjectsFileCommand.Execute(@"F:\Source\C#\criss02-cs\Tesi");
+        WeakReferenceMessenger.Default.Send(new Appearing());
     }
 
     private void InputView_OnTextChanged(object? sender, TextChangedEventArgs e)
@@ -45,7 +36,7 @@ public partial class MainPage : ContentPage
     private bool FilterDataGrid(object record)
     {
         if (BindingContext is not MainPageViewModel vm) return false;
-        if (record is FileInfo item && !vm.ShowDirectories && item.Tipo is Tipo.CARTELLA) return false;
+        if (record is FileInfo item && !vm.ShowDirectories && item.Tipo is Tipo.Folder) return false;
         return true;
     }
 

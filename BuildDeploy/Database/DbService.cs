@@ -26,6 +26,11 @@ public class DbService
         return await table.ToListAsync();
     }
 
+    public async Task<Project> GetProjectById(int id)
+    {
+        return await _database.Table<Project>().FirstOrDefaultAsync(p => p.Id == id);
+    }
+
 
     public async Task<bool> AddOrUpdateProject(Project project)
     {

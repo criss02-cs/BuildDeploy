@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ public record FileInfo(string Path, string Name, string Size, DateTime LastModif
 
 public enum Tipo
 {
-    FILE,
-    CARTELLA
+    File,
+    [Description("Cartella")]
+    Folder
 }

@@ -16,7 +16,6 @@ namespace BuildDeploy.ViewModels;
 public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
 {
     [ObservableProperty] private ObservableCollection<Project> _projects = [];
-    private readonly DbService? _dbService = ServiceManager.GetService<DbService>();
 
 
     public ProjectListViewModel()
@@ -28,7 +27,7 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
     [RelayCommand]
     private async Task LoadProjects()
     {
-        var projects = await _dbService?.GetAllProjects(x => x.LastTimeOpened, true)!;
+        var projects = await DbService?.GetAllProjects(x => x.LastTimeOpened, true)!;
         Projects = new ObservableCollection<Project>(projects);
     }
 
@@ -56,8 +55,24 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
             DefaultDeployPath = "",
             DefaultReleasePath = ""
         };
-        var result = await _dbService?.AddOrUpdateProject(project)!;
+        var result = await DbService?.AddOrUpdateProject(project)!;
         if (!result) return;
         Projects.Add(project);
+    }
+
+    [RelayCommand]
+    private async Task OpenProject(Project project)
+    {
+        project.LastTimeOpened = DateTime.Now;
+        var result = await DbService?.AddOrUpdateProject(project)!;
+        if (!result) return;
+        await SecureStorage.SetAsync("ProjectId", project.Id.ToString());
+        var window = new Window(new MainPage())
+        {
+            Y = (DeviceDisplay.MainDisplayInfo.Height - 768) / 2,
+            X = (DeviceDisplay.MainDisplayInfo.Width - 1366) / 2,
+            Title = "Build and Deploy"
+        };
+        Application.Current?.OpenWindow(window);
     }
 }

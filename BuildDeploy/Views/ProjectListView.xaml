@@ -18,7 +18,11 @@
             <CollectionView ItemsSource="{Binding Projects}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Project">
-                        <StackLayout Visual="{x:DynamicResource CommonStates}" utils:CursorBehavior.Cursor="Hand">
+                        <StackLayout utils:CursorBehavior.Cursor="Hand">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:ProjectListViewModel}}, Path= OpenProjectCommand}" 
+                                                      CommandParameter="{Binding .}" />
+                            </StackLayout.GestureRecognizers>
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
                                     <VisualState x:Name="Normal" />
