@@ -71,7 +71,7 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
         {
             Y = (DeviceDisplay.MainDisplayInfo.Height - 768) / 2,
             X = (DeviceDisplay.MainDisplayInfo.Width - 1366) / 2,
-            Title = "Build and Deploy"
+            Title = "Build and Deploy",
         };
         Application.Current?.OpenWindow(window);
     }

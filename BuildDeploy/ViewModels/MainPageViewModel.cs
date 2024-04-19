@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using BuildDeploy.Messages;
 using BuildDeploy.Models;
+using BuildDeploy.Utils;
 using BuildDeploy.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -43,7 +44,7 @@ public partial class MainPageViewModel : BaseViewModel, IRecipient<Appearing>
             var d = new DirectoryInfo(path);
             var files = d.GetFiles("*.*");
             var p = files.Select(x =>
-                new Models.FileInfo(x.FullName, x.Name, FormatBytes(x.Length), x.LastWriteTime, false, Tipo.File))
+                new Models.FileInfo(x.FullName, x.Name, Formatter.FormatBytes(x.Length), x.LastWriteTime, false, Tipo.File))
                 .ToList();
             if (ShowDirectories)
             {
@@ -57,20 +58,6 @@ public partial class MainPageViewModel : BaseViewModel, IRecipient<Appearing>
         {
 
         }
-    }
-
-
-    private static string FormatBytes(long bytes)
-    {
-        string[] sizes = ["B", "KB", "MB", "GB", "TB"];
-        var order = 0;
-        while (bytes >= 1024 && order < sizes.Length - 1)
-        {
-            order++;
-            bytes /= 1024;
-        }
-
-        return $"{bytes:0.##} {sizes[order]}";
     }
 
     public async void Receive(Appearing message)

@@ -10,7 +10,7 @@ namespace BuildDeploy.Database
     internal static class DbConstants
     {
         public const string DatabaseFilename = "builddeploy.db3";
-        public const SQLite.SQLiteOpenFlags Flags =
+        public const SQLiteOpenFlags Flags =
             // open the database in read/write mode
             SQLiteOpenFlags.ReadWrite |
             // create database if it doesn't exist
