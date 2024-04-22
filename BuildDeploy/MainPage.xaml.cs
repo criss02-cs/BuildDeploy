@@ -40,15 +40,11 @@ public partial class MainPage : ContentPage
         return true;
     }
 
-    private void ToggleButton_OnStateChanged(object? sender, StateChangedEventArgs e)
-    {
-        this.projectFiles.View?.RefreshFilter();
-    }
-
     private void CheckBox_OnCheckChanged(object? sender, EventArgs e)
     {
-        if (projectFiles.View == null) return;
-        projectFiles.View.Filter = FilterDataGrid;
-        projectFiles.View?.RefreshFilter();
+        sfPopup.Show();
+        //if (projectFiles.View == null) return;
+        //projectFiles.View.Filter = FilterDataGrid;
+        //projectFiles.View?.RefreshFilter();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using BuildDeploy.Extensions;
 using BuildDeploy.Messages;
 using BuildDeploy.Models;
 using BuildDeploy.Utils;
@@ -15,6 +16,8 @@ public partial class MainPageViewModel : BaseViewModel, IRecipient<Appearing>
     [ObservableProperty] private ObservableCollection<Models.FileInfo> _projectFiles = [];
     [ObservableProperty] private string _projectPath = "";
     [ObservableProperty] private bool _showDirectories = true;
+    [ObservableProperty] private bool _showFolderPickerPopup = false;
+    [ObservableProperty] private ObservableCollection<Folder> _folders = [];
 
     public MainPageViewModel()
     {
@@ -78,7 +81,32 @@ public partial class MainPageViewModel : BaseViewModel, IRecipient<Appearing>
         }
         var id = await SecureStorage.GetAsync("ProjectId");
         if (id is null) return;
-        var project = await DbService?.GetProjectById(Convert.ToInt32(id))!;
-        if (project.Path != null) LoadProjectFiles(@$"{project.Path}\bin");
+        var project = await DbService?.GetProjectById(id.ToInt32())!;
+        if (string.IsNullOrEmpty(project.DefaultReleasePath))
+        {
+            if (project.Path == null) return;
+            Folders.AddRange([BuildTreeView(project.Path)]);
+            ShowFolderPickerPopup = true;
+        }
+        else
+        {
+            ProjectPath = project.DefaultReleasePath;
+        }
+    }
+
+    private Folder BuildTreeView(string path)
+    {
+        var d = new DirectoryInfo(path);
+        var folder = new Folder
+        {
+            Path = path,
+            Name = d.Name
+        };
+        foreach (var dir in d.GetDirectories())
+        {
+            folder.SubFolders.Add(BuildTreeView(dir.FullName));
+        }
+
+        return folder;
     }
 }

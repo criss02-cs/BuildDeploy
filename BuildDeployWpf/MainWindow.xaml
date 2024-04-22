@@ -4,10 +4,33 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BuildDeployWpf"
-        xmlns:Syncfusion="http://schemas.syncfusion.com/wpf"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        xmlns:viewModels="clr-namespace:BuildDeployWpf.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Build and Deploy" Height="500" Width="700"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Activated="MainWindow_OnActivated"
+        DataContextChanged="MainWindow_OnDataContextChanged"
+        Background="#242424"
+        >
+    <Window.DataContext>
+        <viewModels:SplashScreenViewModel />
+    </Window.DataContext>
     <Grid>
-        <Syncfusion:SfLinearProgressBar Progress="70" />      
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="Build and Deploy" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"
+                       Foreground="White"/>
+        </StackPanel>
+        <TextBlock Text="{Binding Status}" Grid.Row="1"
+                   FontSize="18" FontWeight="Bold" Margin="10,0,0,0"
+                   Foreground="White"/>
+        <syncfusion:SfLinearProgressBar Grid.Row="2" IsIndeterminate="True"  />      
     </Grid>
 </Window>

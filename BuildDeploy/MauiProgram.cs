@@ -1,5 +1,6 @@
 ﻿using BuildDeploy.Database;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.LifecycleEvents;
 using Syncfusion.Maui.Core.Hosting;
 using UraniumUI;
 
@@ -23,6 +24,31 @@ public static class MauiProgram
 
 
         builder.Services.AddSingleton<DbService>();
+
+
+        builder.ConfigureLifecycleEvents(x =>
+        {
+            x.AddWindows(cd =>
+            {
+                cd.OnWindowCreated(w =>
+                {
+                    if (w is not MauiWinUIWindow window)
+                        return;
+
+                    window.ExtendsContentIntoTitleBar = false;
+                    var handle = WinRT.Interop.WindowNative.GetWindowHandle(window);
+                    var id = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(handle);
+                    var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(id);
+                    switch (appWindow.Presenter)
+                    {
+                        case Microsoft.UI.Windowing.OverlappedPresenter overlappedPresenter:
+                            overlappedPresenter.IsResizable = false;
+                            overlappedPresenter.SetBorderAndTitleBar(false, false);
+                            break;
+                    }
+                });
+            });
+        });
 
 #if DEBUG
         builder.Logging.AddDebug();

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BuildDeployWpf": {
+      "commandName": "Project",
+      "commandLineArgs": "SplashScreen=true;Project=Tesi"
+    }
+  }
+}
