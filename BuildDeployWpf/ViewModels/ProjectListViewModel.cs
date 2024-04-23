@@ -4,6 +4,7 @@ using BuildDeployWpf.Database;
 using BuildDeployWpf.Extensions;
 using BuildDeployWpf.Messages;
 using BuildDeployWpf.Models;
+using BuildDeployWpf.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -27,7 +28,11 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
         Application.Current.Dispatcher.Invoke(() => Projects.AddRange(projects));
     }
 
-    public void Receive(Appearing message) => Task.Run(LoadProjects);
+    public void Receive(Appearing message)
+    {
+        if (!message.Value.IsNullOrEmpty()) return;
+        Task.Run(LoadProjects);
+    }
 
     [RelayCommand]
     private async Task AddNewProject()
@@ -49,36 +54,17 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
         result = await DbService.Instance.AddOrUpdateProject(project);
         if (result is not true) return;
         Application.Current.Dispatcher.Invoke(() => Projects.Add(project));
-        //var fileType = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
-        //{
-        //    { DevicePlatform.WinUI, [".csproj"] }
-        //});
-        //var options = new PickOptions
-        //{
-        //    PickerTitle = "Select a project file",
-        //    FileTypes = fileType
-        //};
-        //var file = await FilePicker.PickAsync(options);
-        //if (file is null) return;
-        //var project = new Project
-        //{
-        //    Name = file.FileName,
-        //    Path = file.FullPath.Replace(file.FileName, ""),
-        //    LastTimeOpened = DateTime.Now,
-        //    DefaultDeployPath = "",
-        //    DefaultReleasePath = ""
-        //};
-        //
-        //if (!result) return;
-        //Projects.Add(project);
+        FolderListView.Show(project.Path);
     }
 
     [RelayCommand]
-    private async Task OpenProject(Project project)
+    private async Task OpenProject(object param)
     {
+        if (param is not Project project) return;
         project.LastTimeOpened = DateTime.Now;
         var result = await DbService.Instance?.AddOrUpdateProject(project)!;
         if (!result) return;
+        FolderListView.Show(project.Path);
         //await SecureStorage.SetAsync("ProjectId", project.Id.ToString());
         //var window = new Window(new MainPage())
         //{

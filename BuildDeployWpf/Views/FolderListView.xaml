@@ -1,0 +1,31 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BuildDeployWpf.Views"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        xmlns:viewModels="clr-namespace:BuildDeployWpf.ViewModels"
+        xmlns:models="clr-namespace:BuildDeployWpf.Models"
+        x:Class="BuildDeployWpf.Views.FolderListView"
+        mc:Ignorable="d"
+        Title="FolderListView" Height="450" Width="318"
+        Loaded="FolderListView_OnLoaded"
+        WindowStartupLocation="CenterOwner">
+    <Window.DataContext>
+        <viewModels:FolderListViewModel />
+    </Window.DataContext>
+    <Grid>
+
+        <syncfusion:SfTreeView HorizontalAlignment="Left" Height="349" VerticalAlignment="Top" Width="317" Margin="0,10,0,0"
+                               ItemsSource="{Binding Folders}"
+                               ChildPropertyName="SubFolders">
+            <syncfusion:SfTreeView.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:Folder}">
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </syncfusion:SfTreeView.ItemTemplate>
+        </syncfusion:SfTreeView>
+
+    </Grid>
+</Window>
