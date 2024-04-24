@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BuildDeployWpf.Messages;
 using CommunityToolkit.Mvvm.Messaging;
+using Syncfusion.UI.Xaml.Grid;
 
 namespace BuildDeployWpf.Views;
 /// <summary>
@@ -24,5 +25,6 @@ public partial class ProjectListView : Page
     public ProjectListView()
     {
         InitializeComponent();
+        DataGrid.AutoScroller.AutoScrolling = AutoScrollOrientation.Both;
     }
 }

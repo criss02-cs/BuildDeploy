@@ -169,10 +169,10 @@
                     <Syncfusion:SfTreeView.Style>
                         <Style TargetType="Syncfusion:SfTreeView">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ProjectFiles.Count, Converter={StaticResource HasItemsToVisibilityConverter}}" Value="Collapsed">
+                                <DataTrigger Binding="{Binding ShowDataGrid}" Value="True">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding ProjectFiles.Count, Converter={StaticResource HasItemsToVisibilityConverter}}" Value="Visible">
+                                <DataTrigger Binding="{Binding ShowDataGrid}" Value="False">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -193,15 +193,16 @@
                         </DataTemplate>
                     </Syncfusion:SfTreeView.ItemTemplate>
                 </Syncfusion:SfTreeView>
-                <Syncfusion:SfDataGrid ItemsSource="{Binding ProjectFiles}">
+                <Syncfusion:SfDataGrid ItemsSource="{Binding ProjectFiles}"
+                                       x:Name="DataGrid">
                     <Syncfusion:SfDataGrid.Style>
                         <Style TargetType="Syncfusion:SfDataGrid">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ProjectFiles.Count, Converter={StaticResource EmptyToVisibilityConverter}}" Value="Collapsed">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ProjectFiles.Count, Converter={StaticResource EmptyToVisibilityConverter}}" Value="Visible">
+                                <DataTrigger Binding="{Binding ShowDataGrid}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ShowDataGrid}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

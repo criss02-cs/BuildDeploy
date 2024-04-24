@@ -18,10 +18,11 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
 {
     [ObservableProperty] private ObservableCollection<Project> _projects = [];
     [ObservableProperty] private ObservableCollection<Folder> _folders = [];
-    [ObservableProperty] private ObservableCollection<FileInfo> _projectFiles = [];
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(ShowDataGrid))] private ObservableCollection<FileInfo> _projectFiles = [];
     [ObservableProperty] private Project _selectedProject = new();
     [ObservableProperty] private Folder _selectedFolder = new();
     [ObservableProperty] private bool _showDirectories = true;
+    public bool ShowDataGrid => ProjectFiles.Count > 0;
 
 
     public ProjectListViewModel()
@@ -104,5 +105,6 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
                 new FileInfo(x.FullName, x.Name, "", x.LastWriteTime, false, Tipo.Folder)));
         }
         ProjectFiles.AddRange(p);
+        OnPropertyChanged(nameof(ShowDataGrid));
     }
 }
