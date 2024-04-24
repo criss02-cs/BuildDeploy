@@ -45,19 +45,10 @@ namespace BuildDeploy.WinUI;
 ///     <MyNamespace:Button/>
 ///
 /// </summary>
-public class Button : ContentControl, INotifyPropertyChanged
+public class Button : ContentControl
 {
 
     #region Bindable Properties
-
-    //public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-    //    nameof(Text), typeof(string), typeof(Button), new PropertyMetadata(default(string)));
-
-    //public string Text
-    //{
-    //    get => (string)GetValue(TextProperty);
-    //    set => SetValue(TextProperty, value);
-    //}
 
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
         nameof(CornerRadius), typeof(CornerRadius), typeof(Button), new PropertyMetadata(default(CornerRadius)));
@@ -89,6 +80,7 @@ public class Button : ContentControl, INotifyPropertyChanged
         base.OnApplyTemplate();
         SystemParameters.StaticPropertyChanged += SystemParametersOnStaticPropertyChanged;
         Background = SystemParameters.WindowGlassBrush;
+        SystemParametersOnStaticPropertyChanged(this, new PropertyChangedEventArgs(nameof(SystemParameters.WindowGlassBrush)));
     }
 
     private void SystemParametersOnStaticPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -97,24 +89,16 @@ public class Button : ContentControl, INotifyPropertyChanged
         Background = SystemParameters.WindowGlassBrush;
         if (Background is not SolidColorBrush solidColorBrush) return;
         var c = solidColorBrush.Color;
-        var brightness = (c.R * 299 + c.G * 587 + c.B * 114) / 1000;
         var br = 0.2126 * c.R + 0.7152 * c.G + 0.0722 * c.B;
         Foreground = br >= 128 ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.White);
-        OnPropertyChanged(nameof(Foreground));
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    protected override void OnMouseDown(MouseButtonEventArgs e)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        Click?.Invoke(this, EventArgs.Empty);
+        if(Command.CanExecute(null))
+            Command.Execute(null);
     }
 
-    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
-    }
+    public event EventHandler? Click;
 }

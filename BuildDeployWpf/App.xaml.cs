@@ -20,7 +20,7 @@ public partial class App : Application
         Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(
             "MzIzMTI0NEAzMjM1MmUzMDJlMzBYQWVaeGx3Tlg2dHlHc1R2Rjc3SEhiZHhnTWx5NGhRYkFsZ1N3U1hZakc4PQ==");
         Args = CommandLineArgsBuilder.Build();
-        SfSkinManager.ApplyStylesOnApplication = true;
+        //SfSkinManager.ApplyStylesOnApplication = true;
     }
 
 

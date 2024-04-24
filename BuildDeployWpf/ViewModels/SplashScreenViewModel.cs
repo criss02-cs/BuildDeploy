@@ -63,13 +63,20 @@ public partial class SplashScreenViewModel : BaseViewModel
     {
         var window = Application.Current.MainWindow;
         if (window == null) return;
-        window.Height = 675;
-        window.MaxHeight = 675;
-        window.Width = 1018;
-        window.MaxWidth = 1018;
-        window.Content = new ProjectListView();
-        window.DataContext = new ProjectListViewModel();
-        window.WindowStyle = WindowStyle.SingleBorderWindow;
+        //window.Height = 675;
+        //window.MaxHeight = 675;
+        //window.Width = 1018;
+        //window.MaxWidth = 1018;
+        //window.Content = new ProjectListView();
+        //window.DataContext = new ProjectListViewModel();
+        //window.WindowStyle = WindowStyle.SingleBorderWindow;
+
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            var projectWindow = new ProjectListView();
+            projectWindow.Show();
+            window.Close();
+        });
     }
 
     private static bool CheckDotNetInPath()

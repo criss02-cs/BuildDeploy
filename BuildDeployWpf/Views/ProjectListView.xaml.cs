@@ -20,11 +20,24 @@ namespace BuildDeployWpf.Views;
 /// <summary>
 /// Logica di interazione per ProjectListView.xaml
 /// </summary>
-public partial class ProjectListView : Page
+public partial class ProjectListView : Window
 {
     public ProjectListView()
     {
         InitializeComponent();
         DataGrid.AutoScroller.AutoScrolling = AutoScrollOrientation.Both;
+        DataGrid.AutoScroller.IsEnabled = true;
+    }
+
+    private void ProjectListView_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        WeakReferenceMessenger.Default.Send(new Appearing());
+    }
+
+    private void UIElement_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        if (sender is not ScrollViewer scv) return;
+        scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+        e.Handled = true;
     }
 }

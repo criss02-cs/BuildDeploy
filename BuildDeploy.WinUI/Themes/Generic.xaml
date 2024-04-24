@@ -3,55 +3,118 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:BuildDeploy.WinUI">
 
-    
+
     <Style TargetType="{x:Type local:Button}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:Button}">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding CornerRadius}"
-                            Padding="{TemplateBinding Padding}"
-                            Cursor="Hand"
-                            >
+                    <Border
+                        Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Cursor="Hand">
                         <Border.InputBindings>
-                            <MouseBinding MouseAction="LeftClick" Command="{TemplateBinding Command}"/>
+                            <MouseBinding Command="{TemplateBinding Command}" MouseAction="LeftClick" />
                         </Border.InputBindings>
-                        <ContentPresenter x:Name="ContentPresenter"
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                            />
-                        <!--<TextBlock Text="{TemplateBinding Text}"
-                                   Foreground="{TemplateBinding Foreground}"></TextBlock>-->
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="{x:Type local:Button}" x:Key="DarkButton">
-        <Setter Property="CornerRadius" Value="5"></Setter>
-        <Setter Property="FontSize" Value="14"></Setter>
-        <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
-        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+
+
+    <Style TargetType="{x:Type local:ToggleSwitch}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:ToggleSwitch}">
+                    <Border
+                        x:Name="border"
+                        Height="20"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="10"
+                        SnapsToDevicePixels="True">
+                        <Canvas Background="Transparent">
+                            <Ellipse
+                                x:Name="ellipse"
+                                Canvas.Left="4"
+                                Canvas.Top="5"
+                                Width="10"
+                                Height="10"
+                                Fill="White"
+                                SnapsToDevicePixels="True" />
+                        </Canvas>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                            <!--<DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="ellipse"
+                                                         Storyboard.TargetProperty="(Canvas.Left)"
+                                                         From="6" To="97" Duration="0:0:0.15"
+                                                         AutoReverse="False"></DoubleAnimation>
+                                        <ColorAnimation Storyboard.TargetName="border"
+                                                        Storyboard.TargetProperty="Background.Color"
+                                                        From="#272727" To="{TemplateBinding Background}"
+                                                        Duration="0:0:0.15"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>-->
+                            <Setter TargetName="ellipse" Property="Canvas.Left" Value="97" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
+                            <!--<DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="ellipse"
+                                                         Storyboard.TargetProperty="(Canvas.Left)"
+                                                         From="97" To="6" Duration="0:0:0.15"
+                                                         AutoReverse="False"></DoubleAnimation>
+                                        <ColorAnimation Storyboard.TargetName="border"
+                                                        Storyboard.TargetProperty="Background.Color"
+                                                        From="{TemplateBinding Background}" To="#272727"
+                                                        Duration="0:0:0.15"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>-->
+                            <Setter TargetName="ellipse" Property="Canvas.Left" Value="6" />
+                            <Setter TargetName="border" Property="Background" Value="#272727" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!--  Stili per il pulsante  -->
+    <Style x:Key="DarkButton" TargetType="{x:Type local:Button}">
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Opacity" Value="0.9"></Setter>
+                <Setter Property="Opacity" Value="0.9" />
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style TargetType="{x:Type local:Button}" x:Key="PrimaryButton">
-        <Setter Property="CornerRadius" Value="5"></Setter>
-        <Setter Property="FontSize" Value="14"></Setter>
-        <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
-        <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        <Setter Property="Background" Value="#4cc2ff"></Setter>
-        <Setter Property="Foreground" Value="Black"></Setter>
+    <Style x:Key="PrimaryButton" TargetType="{x:Type local:Button}">
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Background" Value="#4cc2ff" />
+        <Setter Property="Foreground" Value="Black" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#49b3ea"></Setter>
+                <Setter Property="Background" Value="#49b3ea" />
             </Trigger>
         </Style.Triggers>
     </Style>

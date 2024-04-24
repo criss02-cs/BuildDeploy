@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using BuildDeploy.Business.Database;
@@ -40,7 +41,6 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
 
     public void Receive(Appearing message)
     {
-        if (!message.Value.IsNullOrEmpty()) return;
         Task.Run(LoadProjects);
     }
 
@@ -96,13 +96,13 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
         var d = new DirectoryInfo(SelectedFolder.Path);
         var files = d.GetFiles("*.*");
         var p = files.Select(x =>
-                new FileInfo(x.FullName, x.Name, Utils.FormatBytes(x.Length), x.LastWriteTime, false, Tipo.File))
+                new FileInfo(x.FullName, x.Name, Utils.FormatBytes(x.Length), x.LastWriteTime, Tipo.File))
             .ToList();
         if (ShowDirectories)
         {
             var dirs = d.GetDirectories();
             p.AddRange(dirs.Select(x =>
-                new FileInfo(x.FullName, x.Name, "", x.LastWriteTime, false, Tipo.Folder)));
+                new FileInfo(x.FullName, x.Name, "", x.LastWriteTime, Tipo.Folder)));
         }
         ProjectFiles.AddRange(p);
         OnPropertyChanged(nameof(ShowDataGrid));
