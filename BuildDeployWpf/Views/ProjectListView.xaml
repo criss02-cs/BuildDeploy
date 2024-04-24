@@ -49,7 +49,8 @@
                     HorizontalAlignment="Left"
                     Command="{Binding AddNewProjectCommand}"
                     Style="{StaticResource DarkButton}"
-                    Text="Aggiungi un progetto" />
+                    Content="Aggiungi un progetto">
+                </winUi:Button>
             </Grid>
         </Border>
         <Border
@@ -194,7 +195,9 @@
                     </Syncfusion:SfTreeView.ItemTemplate>
                 </Syncfusion:SfTreeView>
                 <Syncfusion:SfDataGrid ItemsSource="{Binding ProjectFiles}"
-                                       x:Name="DataGrid">
+                                       x:Name="DataGrid"
+                                       ColumnSizer="Star"
+                                       AutoGenerateColumns="False">
                     <Syncfusion:SfDataGrid.Style>
                         <Style TargetType="Syncfusion:SfDataGrid">
                             <Style.Triggers>
@@ -208,9 +211,9 @@
                         </Style>
                     </Syncfusion:SfDataGrid.Style>
                     <Syncfusion:SfDataGrid.Columns>
-                        <Syncfusion:GridCheckBoxColumn HeaderText="Seleziona" MappingName="IsSelected" />
+                        <Syncfusion:GridCheckBoxColumn HeaderText="" MappingName="IsSelected" Width="30" />
                         <Syncfusion:GridTextColumn HeaderText="Nome" MappingName="Name" />
-                        <Syncfusion:GridTextColumn HeaderText="Dimensioni" MappingName="Size" />
+                        <Syncfusion:GridTextColumn HeaderText="Dim" MappingName="Size" TextAlignment="Center" />
                         <Syncfusion:GridDateTimeColumn HeaderText="Ultima modifica" MappingName="LastModified" />
                         <Syncfusion:GridTextColumn HeaderText="Tipo" MappingName="Tipo" />
                     </Syncfusion:SfDataGrid.Columns>

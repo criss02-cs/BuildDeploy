@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -43,19 +45,19 @@ namespace BuildDeploy.WinUI;
 ///     <MyNamespace:Button/>
 ///
 /// </summary>
-public class Button : Control
+public class Button : ContentControl, INotifyPropertyChanged
 {
 
     #region Bindable Properties
 
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-        nameof(Text), typeof(string), typeof(Button), new PropertyMetadata(default(string)));
+    //public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
+    //    nameof(Text), typeof(string), typeof(Button), new PropertyMetadata(default(string)));
 
-    public string Text
-    {
-        get => (string)GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
-    }
+    //public string Text
+    //{
+    //    get => (string)GetValue(TextProperty);
+    //    set => SetValue(TextProperty, value);
+    //}
 
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
         nameof(CornerRadius), typeof(CornerRadius), typeof(Button), new PropertyMetadata(default(CornerRadius)));
@@ -79,5 +81,40 @@ public class Button : Control
     static Button()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(Button), new FrameworkPropertyMetadata(typeof(Button)));
+
+    }
+
+    public override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
+        SystemParameters.StaticPropertyChanged += SystemParametersOnStaticPropertyChanged;
+        Background = SystemParameters.WindowGlassBrush;
+    }
+
+    private void SystemParametersOnStaticPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(SystemParameters.WindowGlassBrush)) return;
+        Background = SystemParameters.WindowGlassBrush;
+        if (Background is not SolidColorBrush solidColorBrush) return;
+        var c = solidColorBrush.Color;
+        var brightness = (c.R * 299 + c.G * 587 + c.B * 114) / 1000;
+        var br = 0.2126 * c.R + 0.7152 * c.G + 0.0722 * c.B;
+        Foreground = br >= 128 ? new SolidColorBrush(Colors.Black) : new SolidColorBrush(Colors.White);
+        OnPropertyChanged(nameof(Foreground));
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
     }
 }
