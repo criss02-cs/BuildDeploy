@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BuildDeployWpf.Models;
+﻿using BuildDeploy.Business.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace BuildDeployWpf.Database;
+namespace BuildDeploy.Business.Database;
 public class DatabaseContext : DbContext
 {
     private static DatabaseContext? _instance;

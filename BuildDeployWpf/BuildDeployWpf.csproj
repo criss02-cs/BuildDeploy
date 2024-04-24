@@ -12,11 +12,18 @@
 		<PackageReference Include="FluentFTP" Version="50.0.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="8.0.4" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
+		<PackageReference Include="Syncfusion.SfGrid.WPF" Version="25.1.41" />
 		<PackageReference Include="Syncfusion.SfProgressBar.WPF" Version="25.1.40" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
 		<PackageReference Include="Syncfusion.SfTreeView.WPF" Version="25.1.41" />
+		<PackageReference Include="Syncfusion.Themes.Windows11Dark.WPF" Version="25.1.41" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\BuildDeploy.Business\BuildDeploy.Business.csproj" />
+	  <ProjectReference Include="..\BuildDeploy.WinUI\BuildDeploy.WinUI.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

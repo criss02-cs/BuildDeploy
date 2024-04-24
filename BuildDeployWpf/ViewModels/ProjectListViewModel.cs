@@ -1,18 +1,27 @@
 ﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
-using BuildDeployWpf.Database;
+using BuildDeploy.Business.Database;
+using BuildDeploy.Business.Entity;
+using BuildDeploy.Business.Models;
+using BuildDeploy.Business.Utils;
 using BuildDeployWpf.Extensions;
 using BuildDeployWpf.Messages;
-using BuildDeployWpf.Models;
 using BuildDeployWpf.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using FileInfo = BuildDeploy.Business.Models.FileInfo;
 
 namespace BuildDeployWpf.ViewModels;
 public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
 {
     [ObservableProperty] private ObservableCollection<Project> _projects = [];
+    [ObservableProperty] private ObservableCollection<Folder> _folders = [];
+    [ObservableProperty] private ObservableCollection<FileInfo> _projectFiles = [];
+    [ObservableProperty] private Project _selectedProject = new();
+    [ObservableProperty] private Folder _selectedFolder = new();
+    [ObservableProperty] private bool _showDirectories = true;
 
 
     public ProjectListViewModel()
@@ -54,7 +63,16 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
         result = await DbService.Instance.AddOrUpdateProject(project);
         if (result is not true) return;
         Application.Current.Dispatcher.Invoke(() => Projects.Add(project));
-        FolderListView.Show(project.Path);
+        SelectedProject = project;
+        LoadFolders();
+    }
+
+
+    private void LoadFolders()
+    {
+        if (SelectedProject.Path == null) return;
+        var folder = Utils.FindFolderAndSubFolders(SelectedProject.Path);
+        Folders.AddRange([folder]);
     }
 
     [RelayCommand]
@@ -64,14 +82,27 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
         project.LastTimeOpened = DateTime.Now;
         var result = await DbService.Instance?.AddOrUpdateProject(project)!;
         if (!result) return;
-        FolderListView.Show(project.Path);
-        //await SecureStorage.SetAsync("ProjectId", project.Id.ToString());
-        //var window = new Window(new MainPage())
-        //{
-        //    Y = (DeviceDisplay.MainDisplayInfo.Height - 768) / 2,
-        //    X = (DeviceDisplay.MainDisplayInfo.Width - 1366) / 2,
-        //    Title = "Build and Deploy",
-        //};
-        //Application.Current?.OpenWindow(window);
+        SelectedProject = project;
+        LoadFolders();
+    }
+
+    [RelayCommand]
+    private void OpenFolder(object param)
+    {
+        if (param is not Folder folder) return;
+        SelectedFolder = folder;
+        if (SelectedFolder.Path == null) return;
+        var d = new DirectoryInfo(SelectedFolder.Path);
+        var files = d.GetFiles("*.*");
+        var p = files.Select(x =>
+                new FileInfo(x.FullName, x.Name, Utils.FormatBytes(x.Length), x.LastWriteTime, false, Tipo.File))
+            .ToList();
+        if (ShowDirectories)
+        {
+            var dirs = d.GetDirectories();
+            p.AddRange(dirs.Select(x =>
+                new FileInfo(x.FullName, x.Name, "", x.LastWriteTime, false, Tipo.Folder)));
+        }
+        ProjectFiles.AddRange(p);
     }
 }

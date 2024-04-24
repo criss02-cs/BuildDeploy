@@ -1,11 +1,7 @@
-﻿using System.IO;
-using System.Linq.Expressions;
-using System.Text;
-using BuildDeployWpf.Models;
+﻿using BuildDeploy.Business.Entity;
 using Microsoft.EntityFrameworkCore;
-using SQLite;
 
-namespace BuildDeployWpf.Database;
+namespace BuildDeploy.Business.Database;
 public class DbService
 {
     private static DbService? _instance;

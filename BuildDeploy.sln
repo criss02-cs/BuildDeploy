@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildDeploy", "BuildDeploy\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildDeployWpf", "BuildDeployWpf\BuildDeployWpf.csproj", "{1BCA1CC7-3CFF-4693-8109-D2628F57F3C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildDeploy.WinUI", "BuildDeploy.WinUI\BuildDeploy.WinUI.csproj", "{017BEA95-92E7-4ECB-A537-F0FABD98997F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildDeploy.Business", "BuildDeploy.Business\BuildDeploy.Business.csproj", "{350C6566-CBEB-4A70-B7FC-06FE82DFBD19}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,14 @@ Global
 		{1BCA1CC7-3CFF-4693-8109-D2628F57F3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BCA1CC7-3CFF-4693-8109-D2628F57F3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BCA1CC7-3CFF-4693-8109-D2628F57F3C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{017BEA95-92E7-4ECB-A537-F0FABD98997F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{017BEA95-92E7-4ECB-A537-F0FABD98997F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{017BEA95-92E7-4ECB-A537-F0FABD98997F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{017BEA95-92E7-4ECB-A537-F0FABD98997F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{350C6566-CBEB-4A70-B7FC-06FE82DFBD19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{350C6566-CBEB-4A70-B7FC-06FE82DFBD19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{350C6566-CBEB-4A70-B7FC-06FE82DFBD19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{350C6566-CBEB-4A70-B7FC-06FE82DFBD19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace BuildDeployWpf.Models;
+namespace BuildDeploy.Business.Entity;
 public class Project
 {
     [PrimaryKey, AutoIncrement]

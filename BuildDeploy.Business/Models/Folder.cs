@@ -1,4 +1,4 @@
-﻿namespace BuildDeployWpf.Models;
+﻿namespace BuildDeploy.Business.Models;
 public class Folder
 {
     public string? Name { get; set; }

@@ -1,10 +1,11 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Windows;
-using BuildDeployWpf.Database;
-using BuildDeployWpf.Models;
-using BuildDeployWpf.Utils;
+using BuildDeploy.Business.Database;
+using BuildDeploy.Business.Models;
+using BuildDeploy.Business.Utils;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Syncfusion.SfSkinManager;
 
 namespace BuildDeployWpf;
 
@@ -19,6 +20,7 @@ public partial class App : Application
         Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(
             "MzIzMTI0NEAzMjM1MmUzMDJlMzBYQWVaeGx3Tlg2dHlHc1R2Rjc3SEhiZHhnTWx5NGhRYkFsZ1N3U1hZakc4PQ==");
         Args = CommandLineArgsBuilder.Build();
+        SfSkinManager.ApplyStylesOnApplication = true;
     }
 
 

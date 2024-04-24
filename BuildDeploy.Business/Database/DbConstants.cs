@@ -1,7 +1,6 @@
-﻿using System.IO;
-using SQLite;
+﻿using SQLite;
 
-namespace BuildDeployWpf.Database
+namespace BuildDeploy.Business.Database
 {
     internal static class DbConstants
     {

@@ -1,6 +1,6 @@
-﻿using BuildDeployWpf.Models;
+﻿using BuildDeploy.Business.Models;
 
-namespace BuildDeployWpf.Utils;
+namespace BuildDeploy.Business.Utils;
 
 public class CommandLineArgsBuilder
 {
