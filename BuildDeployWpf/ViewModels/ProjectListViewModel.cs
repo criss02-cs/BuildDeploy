@@ -38,7 +38,7 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
     private async Task LoadProjects()
     {
         var projects = await DbService.Instance.GetAllProjects(x => x.LastTimeOpened, true)!;
-        Application.Current.Dispatcher.Invoke(() => Projects.AddRange(projects));
+        Projects.AddRange(projects);
     }
 
     public void Receive(Appearing message)
@@ -74,15 +74,20 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
     private void LoadFolders()
     {
         if (SelectedProject.Path == null) return;
-        var folder = Utils.FindFolderAndSubFolders(SelectedProject.Path);
-        Folders.AddRange([folder]);
-        if (SelectedProject.DefaultReleasePath.IsNullOrEmpty()) return;
-        SelectedFolder = new Folder
+        if (SelectedProject.DefaultReleasePath.IsNullOrEmpty())
         {
-            Path = SelectedProject.DefaultReleasePath
-        };
-        SelectedFolder.Name = Path.GetDirectoryName(SelectedFolder.Path);
-        LoadProjectFiles();
+            var folder = Utils.FindFolderAndSubFolders(SelectedProject.Path);
+            Folders.AddRange([folder]);
+        }
+        else
+        {
+            SelectedFolder = new Folder
+            {
+                Path = SelectedProject.DefaultReleasePath
+            };
+            SelectedFolder.Name = Path.GetDirectoryName(SelectedFolder.Path);
+            LoadProjectFiles();
+        }
     }
 
     [RelayCommand]
