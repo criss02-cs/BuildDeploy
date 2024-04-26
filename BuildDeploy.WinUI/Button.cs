@@ -51,7 +51,7 @@ public class Button : ContentControl
     #region Bindable Properties
 
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-        nameof(CornerRadius), typeof(CornerRadius), typeof(Button), new PropertyMetadata(default(CornerRadius)));
+        nameof(CornerRadius), typeof(CornerRadius), typeof(Button), new PropertyMetadata(new CornerRadius(5)));
 
     public CornerRadius CornerRadius
     {
@@ -62,31 +62,45 @@ public class Button : ContentControl
     public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
         nameof(Command), typeof(ICommand), typeof(Button), new PropertyMetadata(default(ICommand)));
 
-    public ICommand Command
+    public ICommand? Command
     {
         get => (ICommand)GetValue(CommandProperty);
         set => SetValue(CommandProperty, value);
     }
 
     #endregion
+
+    /// <summary>
+    /// Serve per vedere se ho settato un colore particolare, così che non venga sovrascritto da quello di sistema
+    /// </summary>
+    private bool CanSetBackground => Style.Setters.All(x => (x as Setter)?.Property != BackgroundProperty);
     static Button()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(Button), new FrameworkPropertyMetadata(typeof(Button)));
-
+        FontSizeProperty.OverrideMetadata(typeof(Button), new FrameworkPropertyMetadata(14.0));
+        HorizontalContentAlignmentProperty.OverrideMetadata(typeof(Button),
+            new FrameworkPropertyMetadata(System.Windows.HorizontalAlignment.Center));
+        VerticalContentAlignmentProperty.OverrideMetadata(typeof(Button),
+            new FrameworkPropertyMetadata(System.Windows.VerticalAlignment.Center));
+        VerticalAlignmentProperty.OverrideMetadata(typeof(Button),
+            new FrameworkPropertyMetadata(System.Windows.VerticalAlignment.Center));
     }
 
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
         SystemParameters.StaticPropertyChanged += SystemParametersOnStaticPropertyChanged;
-        Background = SystemParameters.WindowGlassBrush;
+        if(CanSetBackground) Background = SystemParameters.WindowGlassBrush;
         SystemParametersOnStaticPropertyChanged(this, new PropertyChangedEventArgs(nameof(SystemParameters.WindowGlassBrush)));
     }
 
     private void SystemParametersOnStaticPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName != nameof(SystemParameters.WindowGlassBrush)) return;
-        Background = SystemParameters.WindowGlassBrush;
+        if (CanSetBackground)
+        {
+            Background = SystemParameters.WindowGlassBrush;
+        }
         if (Background is not SolidColorBrush solidColorBrush) return;
         var c = solidColorBrush.Color;
         var br = 0.2126 * c.R + 0.7152 * c.G + 0.0722 * c.B;
@@ -96,6 +110,7 @@ public class Button : ContentControl
     protected override void OnMouseDown(MouseButtonEventArgs e)
     {
         Click?.Invoke(this, EventArgs.Empty);
+        if (Command is null) return;
         if(Command.CanExecute(null))
             Command.Execute(null);
     }

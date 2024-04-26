@@ -18,14 +18,36 @@
                         <Border.InputBindings>
                             <MouseBinding Command="{TemplateBinding Command}" MouseAction="LeftClick" />
                         </Border.InputBindings>
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Opacity" Value="0.9" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
+    <!--  Stili per il pulsante  -->
+    <Style x:Key="DarkButton" TargetType="{x:Type local:Button}">
+        <Setter Property="Background" Value="#2d2d2d" />
+    </Style>
+    <Style x:Key="PrimaryButton" TargetType="{x:Type local:Button}">
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Background" Value="#4cc2ff" />
+        <Setter Property="Foreground" Value="Black" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#49b3ea" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
     <Style TargetType="{x:Type local:ToggleSwitch}">
         <Setter Property="Template">
@@ -90,32 +112,128 @@
         </Setter>
     </Style>
 
+    <Style TargetType="{x:Type local:Modal}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:Modal}">
+                    <ControlTemplate.Resources>
+                        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+                    </ControlTemplate.Resources>
+                    <Grid
+                        Panel.ZIndex="{TemplateBinding ZIndex}"
+                        Background="{TemplateBinding Background}"
+                        Visibility="{TemplateBinding IsOpen,
+                                                     Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Border
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            UseLayoutRounding="True">
+                            <Grid>
+                                <Grid.OpacityMask>
+                                    <VisualBrush Visual="{Binding ElementName=border}" />
+                                </Grid.OpacityMask>
+                                <Border
+                                    x:Name="border"
+                                    Background="White"
+                                    CornerRadius="5" />
+                                <ContentControl Content="{TemplateBinding Content}" />
+                            </Grid>
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    ShadowDepth="2"
+                                    Color="#2b2b2b" />
+                            </Border.Effect>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-    <!--  Stili per il pulsante  -->
-    <Style x:Key="DarkButton" TargetType="{x:Type local:Button}">
-        <Setter Property="CornerRadius" Value="5" />
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Opacity" Value="0.9" />
-            </Trigger>
-        </Style.Triggers>
+    <Style TargetType="{x:Type local:WinUiWindow}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:WinUiWindow}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <local:Modal x:Name="Alert" Panel.ZIndex="10">
+                            <Grid Width="300" Background="#2b2b2b">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    x:Name="AlertText"
+                                    Margin="15"
+                                    FontSize="18"
+                                    FontWeight="Bold"
+                                    TextWrapping="Wrap" />
+                                <Grid Grid.Row="1" Background="#202020">
+                                    <local:Button
+                                        x:Name="AlertButton"
+                                        Height="32"
+                                        Margin="10"
+                                        Padding="10,0"
+                                        HorizontalAlignment="Right"
+                                        Content="OK"
+                                        Style="{StaticResource DarkButton}" />
+                                </Grid>
+                            </Grid>
+                        </local:Modal>
+                        <local:Modal x:Name="ConfirmAlert" Panel.ZIndex="10">
+                            <Grid Width="300" Background="#2b2b2b">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <StackPanel>
+                                    <TextBlock
+                                        x:Name="ConfirmTitle"
+                                        Margin="15,15,15,0"
+                                        FontSize="20"
+                                        FontWeight="Bold"
+                                        TextWrapping="Wrap" />
+                                    <TextBlock
+                                        x:Name="ConfirmText"
+                                        Margin="15"
+                                        FontSize="14"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                                <Grid Grid.Row="1" Background="#202020">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <local:Button
+                                        x:Name="ConfirmButton"
+                                        Grid.Column="0"
+                                        Height="32"
+                                        Margin="10"
+                                        Padding="10,0"
+                                        HorizontalAlignment="Stretch"
+                                        Content="Yes"
+                                        Style="{StaticResource DarkButton}" />
+                                    <local:Button
+                                        x:Name="CancelButton"
+                                        Grid.Column="1"
+                                        Height="32"
+                                        Margin="10"
+                                        Padding="10,0"
+                                        HorizontalAlignment="Stretch"
+                                        Content="No"
+                                        Style="{StaticResource DarkButton}" />
+                                </Grid>
+                            </Grid>
+                        </local:Modal>
+                        <ContentPresenter Content="{TemplateBinding Content}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
-    <Style x:Key="PrimaryButton" TargetType="{x:Type local:Button}">
-        <Setter Property="CornerRadius" Value="5" />
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Background" Value="#4cc2ff" />
-        <Setter Property="Foreground" Value="Black" />
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#49b3ea" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+
+
+
 </ResourceDictionary>

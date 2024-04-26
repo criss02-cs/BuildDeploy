@@ -1,4 +1,4 @@
-﻿<Window
+﻿<winUi:WinUiWindow
     x:Class="BuildDeployWpf.Views.ProjectListView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -56,8 +56,7 @@
                     Padding="10,0"
                     HorizontalAlignment="Left"
                     Command="{Binding AddNewProjectCommand}"
-                    Content="Aggiungi un progetto"
-                    Style="{StaticResource DarkButton}" />
+                    Content="Aggiungi un progetto"/>
                 <TextBlock Grid.Column="1" Text="{Binding SelectedFolder.Path}" />
                 <!--<winUi:ToggleSwitch Grid.Column="2" IsChecked="False" Background="Green">
                 </winUi:ToggleSwitch>-->
@@ -254,4 +253,4 @@
             </ScrollViewer>
         </Border>
     </Grid>
-</Window>
+</winUi:WinUiWindow>

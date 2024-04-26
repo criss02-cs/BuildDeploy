@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BuildDeploy.WinUI;
 using BuildDeployWpf.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using Syncfusion.UI.Xaml.Grid;
@@ -20,7 +21,7 @@ namespace BuildDeployWpf.Views;
 /// <summary>
 /// Logica di interazione per ProjectListView.xaml
 /// </summary>
-public partial class ProjectListView : Window
+public partial class ProjectListView : WinUiWindow
 {
     public ProjectListView()
     {

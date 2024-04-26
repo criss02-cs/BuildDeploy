@@ -2,10 +2,12 @@
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
+using System.Windows.Data;
 using BuildDeploy.Business.Database;
 using BuildDeploy.Business.Entity;
 using BuildDeploy.Business.Models;
 using BuildDeploy.Business.Utils;
+using BuildDeploy.WinUI;
 using BuildDeployWpf.Extensions;
 using BuildDeployWpf.Messages;
 using BuildDeployWpf.Views;
@@ -74,24 +76,52 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
         if (SelectedProject.Path == null) return;
         var folder = Utils.FindFolderAndSubFolders(SelectedProject.Path);
         Folders.AddRange([folder]);
+        if (SelectedProject.DefaultReleasePath.IsNullOrEmpty()) return;
+        SelectedFolder = new Folder
+        {
+            Path = SelectedProject.DefaultReleasePath
+        };
+        SelectedFolder.Name = Path.GetDirectoryName(SelectedFolder.Path);
+        LoadProjectFiles();
     }
 
     [RelayCommand]
-    private async Task OpenProject(object param)
+    private Task OpenProject(object param)
     {
-        if (param is not Project project) return;
-        project.LastTimeOpened = DateTime.Now;
-        var result = await DbService.Instance?.AddOrUpdateProject(project)!;
-        if (!result) return;
-        SelectedProject = project;
-        LoadFolders();
+        return Task.Run(async () =>
+        {
+            if (param is not Project project) return;
+            project.LastTimeOpened = DateTime.Now;
+            var result = await DbService.Instance?.AddOrUpdateProject(project)!;
+            if (!result) return;
+            SelectedProject = project;
+            LoadFolders();
+        });
     }
 
     [RelayCommand]
-    private void OpenFolder(object param)
+    private async Task OpenFolder(object param)
     {
         if (param is not Folder folder) return;
         SelectedFolder = folder;
+        if (SelectedFolder.Path == null) return;
+        if (SelectedProject.DefaultReleasePath.IsNullOrEmpty())
+        {
+            var currentWindow = Application.Current.MainWindow;
+            if (currentWindow is not WinUiWindow win) return;
+            var resp = await win.ShowConfirmAsync("Cartella di default",
+                "Vuoi rendere questa cartella la cartella standard?", "Sì");
+            if (resp)
+            {
+                SelectedProject.DefaultReleasePath = SelectedFolder.Path;
+                await DbService.Instance.AddOrUpdateProject(SelectedProject);
+            }
+        }
+       
+    }
+
+    private void LoadProjectFiles()
+    {
         if (SelectedFolder.Path == null) return;
         var d = new DirectoryInfo(SelectedFolder.Path);
         var files = d.GetFiles("*.*");
