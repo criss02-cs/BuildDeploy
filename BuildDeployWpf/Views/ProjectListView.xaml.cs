@@ -15,7 +15,9 @@ using System.Windows.Shapes;
 using BuildDeploy.WinUI;
 using BuildDeployWpf.Messages;
 using CommunityToolkit.Mvvm.Messaging;
+using Syncfusion.SfSkinManager;
 using Syncfusion.UI.Xaml.Grid;
+using Syncfusion.UI.Xaml.TreeView;
 
 namespace BuildDeployWpf.Views;
 /// <summary>
@@ -28,6 +30,7 @@ public partial class ProjectListView : WinUiWindow
         InitializeComponent();
         DataGrid.AutoScroller.AutoScrolling = AutoScrollOrientation.Both;
         DataGrid.AutoScroller.IsEnabled = true;
+        SfSkinManager.SetTheme(this, new Theme("Windows11Dark", [nameof(SfTreeView)]));
     }
 
     private void ProjectListView_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

@@ -42,7 +42,7 @@ public partial class MainPage : ContentPage
 
     private void CheckBox_OnCheckChanged(object? sender, EventArgs e)
     {
-        sfPopup.Show();
+        //sfPopup.Show();
         //if (projectFiles.View == null) return;
         //projectFiles.View.Filter = FilterDataGrid;
         //projectFiles.View?.RefreshFilter();

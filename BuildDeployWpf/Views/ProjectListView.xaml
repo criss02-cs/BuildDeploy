@@ -55,9 +55,12 @@
                     Height="32"
                     Padding="10,0"
                     HorizontalAlignment="Left"
+                    FontFamily="OpenSansRegular"
+                    FontSize="14"
                     Command="{Binding AddNewProjectCommand}"
                     Content="Aggiungi un progetto"/>
-                <TextBlock Grid.Column="1" Text="{Binding SelectedFolder.Path}" />
+                <TextBlock Grid.Column="1" Text="{Binding SelectedFolder.Path}"
+                           FontFamily="OpenSansRegular" FontSize="14"/>
                 <!--<winUi:ToggleSwitch Grid.Column="2" IsChecked="False" Background="Green">
                 </winUi:ToggleSwitch>-->
             </Grid>
@@ -131,8 +134,8 @@
                     <DataTemplate>
                         <Grid Cursor="Hand">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="6*" />
-                                <ColumnDefinition Width="4*" />
+                                <ColumnDefinition Width="5.5*" />
+                                <ColumnDefinition Width="4.5*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -142,19 +145,23 @@
                                 Grid.Row="0"
                                 Grid.Column="0"
                                 Foreground="White"
+                                FontFamily="OpenSansRegular"
+                                FontSize="14"
                                 Text="{Binding Name}" />
                             <TextBlock
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 HorizontalAlignment="Right"
-                                FontFamily="Segoe UI"
+                                FontFamily="OpenSansRegular"
                                 Foreground="White"
+                                FontSize="14"
                                 Text="{Binding LastTimeOpened, StringFormat=dd/MM/yyyy HH:mm:ss}" />
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="0"
-                                FontFamily="Segoe UI"
+                                FontFamily="OpenSansRegular"
                                 Grid.ColumnSpan="2"
+                                Margin="0,2"
                                 Foreground="White"
                                 Text="{Binding Path}" />
                         </Grid>
@@ -216,6 +223,7 @@
                         RowSelectionBrush="#2d2d2d"
                         SelectionForegroundBrush="White"
                         Background="#1f2022"
+                        FontFamily="OpenSansRegular"
                         ColumnSizer="AutoWithLastColumnFill"
                         ItemsSource="{Binding ProjectFiles}">
                         <Syncfusion:SfDataGrid.Style>
@@ -234,19 +242,47 @@
                             <Syncfusion:GridCheckBoxSelectorColumn AllowSorting="False" 
                                                                    Width="35"
                                                                    MappingName="IsSelected"></Syncfusion:GridCheckBoxSelectorColumn>
-                            <Syncfusion:GridTextColumn HeaderText="Nome" MappingName="Name" />
+                            <Syncfusion:GridTextColumn HeaderText="Nome" MappingName="Name">
+                                <Syncfusion:GridTextColumn.CellStyle>
+                                    <Style TargetType="Syncfusion:GridCell">
+                                        <Setter Property="FontSize" Value="14" />
+                                        <Setter Property="FontFamily" Value="OpenSansRegular" />
+                                    </Style>
+                                </Syncfusion:GridTextColumn.CellStyle>
+                            </Syncfusion:GridTextColumn>
                             <Syncfusion:GridTextColumn
                                 HeaderText="Dimensioni"
                                 MappingName="Size"
-                                TextAlignment="Center" />
+                                TextAlignment="Center">
+                                <Syncfusion:GridTextColumn.CellStyle>
+                                    <Style TargetType="Syncfusion:GridCell">
+                                        <Setter Property="FontSize" Value="12" />
+                                        <Setter Property="FontFamily" Value="OpenSansRegular" />
+                                    </Style>
+                                </Syncfusion:GridTextColumn.CellStyle>
+                            </Syncfusion:GridTextColumn>
                             <Syncfusion:GridDateTimeColumn
                                 HeaderText="Ultima modifica"
                                 MappingName="LastModified"
-                                TextAlignment="Center" />
+                                TextAlignment="Center">
+                                <Syncfusion:GridDateTimeColumn.CellStyle>
+                                    <Style TargetType="Syncfusion:GridCell">
+                                        <Setter Property="FontSize" Value="12" />
+                                        <Setter Property="FontFamily" Value="OpenSansRegular" />
+                                    </Style>
+                                </Syncfusion:GridDateTimeColumn.CellStyle>
+                            </Syncfusion:GridDateTimeColumn>
                             <Syncfusion:GridTextColumn
                                 HeaderText="Tipo"
                                 MappingName="Tipo"
-                                TextAlignment="Center" />
+                                TextAlignment="Center">
+                                <Syncfusion:GridTextColumn.CellStyle>
+                                    <Style TargetType="Syncfusion:GridCell">
+                                        <Setter Property="FontSize" Value="12" />
+                                        <Setter Property="FontFamily" Value="OpenSansRegular" />
+                                    </Style>
+                                </Syncfusion:GridTextColumn.CellStyle>
+                            </Syncfusion:GridTextColumn>
                         </Syncfusion:SfDataGrid.Columns>
                     </Syncfusion:SfDataGrid>
                 </StackPanel>
