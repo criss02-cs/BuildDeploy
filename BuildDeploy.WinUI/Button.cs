@@ -74,6 +74,7 @@ public class Button : ContentControl
     /// Serve per vedere se ho settato un colore particolare, così che non venga sovrascritto da quello di sistema
     /// </summary>
     private bool CanSetBackground => Style.Setters.All(x => (x as Setter)?.Property != BackgroundProperty);
+    private bool CanSetForeground => Style.Setters.All(x => (x as Setter)?.Property != ForegroundProperty);
     static Button()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(Button), new FrameworkPropertyMetadata(typeof(Button)));
@@ -101,6 +102,8 @@ public class Button : ContentControl
         {
             Background = SystemParameters.WindowGlassBrush;
         }
+
+        if (!CanSetForeground) return;
         if (Background is not SolidColorBrush solidColorBrush) return;
         var c = solidColorBrush.Color;
         var br = 0.2126 * c.R + 0.7152 * c.G + 0.0722 * c.B;

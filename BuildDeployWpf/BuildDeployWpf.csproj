@@ -25,6 +25,7 @@
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
 		<PackageReference Include="Syncfusion.SfTreeView.WPF" Version="25.1.41" />
 		<PackageReference Include="Syncfusion.Themes.Windows11Dark.WPF" Version="25.1.41" />
+		<PackageReference Include="Syncfusion.Tools.WPF" Version="25.1.42" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -27,6 +27,57 @@
     <Window.Resources>
         <converters:HasItemsToVisibilityConverter x:Key="HasItemsToVisibilityConverter" />
         <converters:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Style x:Key="ListItemSelected" TargetType="ListViewItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Grid>
+                            <Border
+                                Name="LeftBd"
+                                Width="3"
+                                Height="20"
+                                HorizontalAlignment="Left"
+                                Panel.ZIndex="5"
+                                CornerRadius="2" />
+                            <Border
+                                Name="Bd"
+                                Padding="10,5"
+                                CornerRadius="5"
+                                SnapsToDevicePixels="true">
+                                <ContentPresenter
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#3d3d3d" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="LeftBd" Property="Background" Value="#4cc2ff" />
+                                <Setter TargetName="Bd" Property="Background" Value="#3d3d3d" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True" />
+                                    <Condition Property="IsMouseOver" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Bd" Property="Background" Value="#292929" />
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="headerStyle" TargetType="Syncfusion:GridHeaderCellControl">
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style x:Key="CellStyle" TargetType="Syncfusion:GridCell">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontFamily" Value="OpenSansRegular" />
+        </Style>
     </Window.Resources>
 
     <Window.DataContext>
@@ -41,10 +92,17 @@
             <RowDefinition Height="60" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Border Background="#2a2b2d" Margin="10,0" VerticalAlignment="Bottom"
-                CornerRadius="10,10,0,0" BorderThickness="0" Height="53" Padding="10,5">
+        <Border
+            Height="53"
+            Margin="10,0"
+            Padding="10,5"
+            VerticalAlignment="Bottom"
+            Background="#2a2b2d"
+            BorderThickness="0"
+            CornerRadius="10,10,0,0">
             <winUi:Button
                 Height="32"
+                Margin="0,0,0,6"
                 Padding="10,0"
                 HorizontalAlignment="Center"
                 Command="{Binding AddNewProjectCommand}"
@@ -52,28 +110,39 @@
                 FontFamily="OpenSansRegular"
                 FontSize="14" />
         </Border>
-        <Border Grid.Column="1" Background="#2a2b2d" Grid.Row="0" Margin="10,0"
-                CornerRadius="10" BorderThickness="0" Height="45" Padding="10,5">
-            <StackPanel Orientation="Horizontal" >
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type winUi:Button}">
-                        <Setter Property="Margin" Value="0,0,10,0"></Setter>
-                    </Style>
-                </StackPanel.Resources>
+        <Border
+            Grid.Row="0"
+            Grid.Column="1"
+            Height="45"
+            Margin="10,0"
+            Padding="10,5"
+            Background="#2a2b2d"
+            BorderThickness="0"
+            CornerRadius="10">
+            <StackPanel Orientation="Horizontal">
                 <winUi:Button
+                    Name="Build"
                     Height="32"
+                    Margin="0,0,10,0"
                     Padding="10,0"
                     HorizontalAlignment="Left"
                     Content="Build"
                     FontFamily="OpenSansRegular"
-                    FontSize="14" />
+                    FontSize="14"
+                    Style="{StaticResource Warning}"
+                    Visibility="{Binding ShowBuildButton, Converter={StaticResource BooleanToVisibilityConverter}}">
+                </winUi:Button>
                 <winUi:Button
+                    Name="Deploy"
                     Height="32"
+                    Margin="0,0,10,0"
                     Padding="10,0"
                     HorizontalAlignment="Left"
                     Content="Deploy"
                     FontFamily="OpenSansRegular"
-                    FontSize="14" />
+                    FontSize="14"
+                    Style="{StaticResource Success}"
+                    Visibility="{Binding ShowDeployButton, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
         </Border>
         <Border
@@ -85,10 +154,11 @@
             CornerRadius="0,0,10,10">
             <ListView
                 x:Name="ListView"
+                Margin="10,0"
                 HorizontalContentAlignment="Stretch"
                 Background="Transparent"
-                Margin="10,0"
                 BorderThickness="0"
+                ItemContainerStyle="{StaticResource ListItemSelected}"
                 ItemsSource="{Binding Projects}"
                 SelectedItem="{Binding SelectedProject}">
                 <i:Interaction.Triggers>
@@ -96,54 +166,9 @@
                         <i:InvokeCommandAction Command="{Binding OpenProjectCommand}" CommandParameter="{Binding SelectedItem, ElementName=ListView}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListViewItem">
-                                    <Grid>
-                                        <Border
-                                            Name="LeftBd"
-                                            Width="3"
-                                            Height="20"
-                                            HorizontalAlignment="Left"
-                                            Panel.ZIndex="5"
-                                            CornerRadius="2" />
-                                        <Border
-                                            Name="Bd"
-                                            Padding="10,5"
-                                            CornerRadius="5"
-                                            SnapsToDevicePixels="true">
-                                            <ContentPresenter
-                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                        </Border>
-                                    </Grid>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="Bd" Property="Background" Value="#3d3d3d" />
-                                        </Trigger>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="LeftBd" Property="Background" Value="#4cc2ff" />
-                                            <Setter TargetName="Bd" Property="Background" Value="#3d3d3d" />
-                                        </Trigger>
-                                        <MultiTrigger>
-                                            <MultiTrigger.Conditions>
-                                                <Condition Property="IsSelected" Value="True" />
-                                                <Condition Property="IsMouseOver" Value="True" />
-                                            </MultiTrigger.Conditions>
-                                            <Setter TargetName="Bd" Property="Background" Value="#292929" />
-                                        </MultiTrigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Cursor="Hand" Width="{Binding Source={x:Reference ListView}, Path=Width}">
+                        <Grid Width="{Binding Source={x:Reference ListView}, Path=Width}" Cursor="Hand">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="5.5*" />
                                 <ColumnDefinition Width="4.5*" />
@@ -171,13 +196,13 @@
                                 Grid.Row="1"
                                 Grid.Column="0"
                                 Grid.ColumnSpan="2"
-                                TextWrapping="Wrap"
-                                HorizontalAlignment="Left"
                                 Width="345"
                                 Margin="0,2"
+                                HorizontalAlignment="Left"
                                 FontFamily="OpenSansRegular"
                                 Foreground="White"
-                                Text="{Binding Path}" />
+                                Text="{Binding Path}"
+                                TextWrapping="Wrap" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -185,12 +210,34 @@
         </Border>
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="30" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" Background="#2a2b2d" Margin="10,0,10,-1"
-                    CornerRadius="10,10,0,0" BorderThickness="0">
-
+            <Border
+                Grid.Row="0"
+                Margin="10,0,10,-1"
+                Background="#2a2b2d"
+                BorderThickness="0"
+                CornerRadius="10,10,0,0">
+                <TextBlock
+                    Margin="10,0"
+                    VerticalAlignment="Center"
+                    FontFamily="OpenSansRegular"
+                    FontSize="14"
+                    Text="{Binding SelectedFolder.Path}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ShowDataGrid}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ShowDataGrid}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </Border>
             <Border
                 Grid.Row="1"
@@ -206,7 +253,8 @@
                             VerticalAlignment="Top"
                             BorderThickness="0"
                             ChildPropertyName="SubFolders"
-                            ItemsSource="{Binding Folders}">
+                            ItemsSource="{Binding Folders}"
+                            SelectionBackgroundColor="#3d3d3d">
                             <Syncfusion:SfTreeView.Style>
                                 <Style TargetType="Syncfusion:SfTreeView">
                                     <Style.Triggers>
@@ -229,6 +277,8 @@
                                     <TextBlock
                                         Name="TextBlock"
                                         Cursor="Hand"
+                                        FontFamily="OpenSansRegular"
+                                        FontSize="14"
                                         Foreground="White"
                                         Text="{Binding Name}" />
                                 </DataTemplate>
@@ -239,13 +289,14 @@
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             AutoGenerateColumns="False"
-                            Background="#1f2022"
+                            Background="#2a2b2d"
                             BorderBrush="#2d2d2d"
                             BorderThickness="1"
                             ColumnSizer="AutoWithLastColumnFill"
                             FontFamily="OpenSansRegular"
+                            HeaderStyle="{StaticResource headerStyle}"
                             ItemsSource="{Binding ProjectFiles}"
-                            RowSelectionBrush="#2d2d2d"
+                            RowSelectionBrush="#3d3d3d"
                             SelectionForegroundBrush="White"
                             SelectionMode="Multiple">
                             <Syncfusion:SfDataGrid.Style>
@@ -259,53 +310,35 @@
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
+                                <!--<Style TargetType="Syncfusion:GridCell">
+                                    <Setter Property="FontSize" Value="14" />
+                                    <Setter Property="FontFamily" Value="OpenSansRegular" />
+                                </Style>-->
                             </Syncfusion:SfDataGrid.Style>
                             <Syncfusion:SfDataGrid.Columns>
                                 <Syncfusion:GridCheckBoxSelectorColumn
                                     Width="35"
                                     AllowSorting="False"
                                     MappingName="IsSelected" />
-                                <Syncfusion:GridTextColumn HeaderText="Nome" MappingName="Name">
-                                    <Syncfusion:GridTextColumn.CellStyle>
-                                        <Style TargetType="Syncfusion:GridCell">
-                                            <Setter Property="FontSize" Value="14" />
-                                            <Setter Property="FontFamily" Value="OpenSansRegular" />
-                                        </Style>
-                                    </Syncfusion:GridTextColumn.CellStyle>
-                                </Syncfusion:GridTextColumn>
                                 <Syncfusion:GridTextColumn
+                                    CellStyle="{StaticResource CellStyle}"
+                                    HeaderText="Nome"
+                                    MappingName="Name" />
+                                <Syncfusion:GridTextColumn
+                                    CellStyle="{StaticResource CellStyle}"
                                     HeaderText="Dimensioni"
                                     MappingName="Size"
-                                    TextAlignment="Center">
-                                    <Syncfusion:GridTextColumn.CellStyle>
-                                        <Style TargetType="Syncfusion:GridCell">
-                                            <Setter Property="FontSize" Value="12" />
-                                            <Setter Property="FontFamily" Value="OpenSansRegular" />
-                                        </Style>
-                                    </Syncfusion:GridTextColumn.CellStyle>
-                                </Syncfusion:GridTextColumn>
+                                    TextAlignment="Center" />
                                 <Syncfusion:GridDateTimeColumn
+                                    CellStyle="{StaticResource CellStyle}"
                                     HeaderText="Ultima modifica"
                                     MappingName="LastModified"
-                                    TextAlignment="Center">
-                                    <Syncfusion:GridDateTimeColumn.CellStyle>
-                                        <Style TargetType="Syncfusion:GridCell">
-                                            <Setter Property="FontSize" Value="12" />
-                                            <Setter Property="FontFamily" Value="OpenSansRegular" />
-                                        </Style>
-                                    </Syncfusion:GridDateTimeColumn.CellStyle>
-                                </Syncfusion:GridDateTimeColumn>
+                                    TextAlignment="Center" />
                                 <Syncfusion:GridTextColumn
+                                    CellStyle="{StaticResource CellStyle}"
                                     HeaderText="Tipo"
                                     MappingName="Tipo"
-                                    TextAlignment="Center">
-                                    <Syncfusion:GridTextColumn.CellStyle>
-                                        <Style TargetType="Syncfusion:GridCell">
-                                            <Setter Property="FontSize" Value="12" />
-                                            <Setter Property="FontFamily" Value="OpenSansRegular" />
-                                        </Style>
-                                    </Syncfusion:GridTextColumn.CellStyle>
-                                </Syncfusion:GridTextColumn>
+                                    TextAlignment="Center" />
                             </Syncfusion:SfDataGrid.Columns>
                         </Syncfusion:SfDataGrid>
                     </StackPanel>

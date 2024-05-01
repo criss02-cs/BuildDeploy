@@ -22,10 +22,13 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
     [ObservableProperty] private ObservableCollection<Project> _projects = [];
     [ObservableProperty] private ObservableCollection<Folder> _folders = [];
     [ObservableProperty, NotifyPropertyChangedFor(nameof(ShowDataGrid))] private ObservableCollection<FileInfo> _projectFiles = [];
-    [ObservableProperty] private Project _selectedProject = new();
-    [ObservableProperty] private Folder _selectedFolder = new();
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(ShowBuildButton))] private Project _selectedProject = new();
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(ShowDeployButton))] private Folder _selectedFolder = new();
     [ObservableProperty] private bool _showDirectories = true;
+    [ObservableProperty] private ObservableCollection<HierarchyItem> _hierarchy = [];
     public bool ShowDataGrid => ProjectFiles.Count > 0;
+    public bool ShowBuildButton => SelectedProject.Id != 0;
+    public bool ShowDeployButton => !SelectedFolder.Name.IsNullOrEmpty();
 
 
     public ProjectListViewModel()
@@ -100,6 +103,9 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
             var result = await DbService.Instance?.AddOrUpdateProject(project)!;
             if (!result) return;
             SelectedProject = project;
+            SelectedFolder = new Folder();
+            ProjectFiles = [];
+            Folders = [];
             LoadFolders();
         });
     }
@@ -129,6 +135,7 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
     {
         if (SelectedFolder.Path == null) return;
         var d = new DirectoryInfo(SelectedFolder.Path);
+        Hierarchy = [HierarchyItem.BuildHierarchyFromPath(SelectedFolder.Path)];
         var files = d.GetFiles("*.*");
         var p = files.Select(x =>
                 new FileInfo(x.FullName, x.Name, Utils.FormatBytes(x.Length), x.LastWriteTime, Tipo.File))
