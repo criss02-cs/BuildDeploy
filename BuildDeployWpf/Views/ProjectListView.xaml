@@ -22,7 +22,7 @@
     DataContextChanged="ProjectListView_OnDataContextChanged"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
-    WindowStyle="SingleBorderWindow"
+    WindowStyle="None"
     mc:Ignorable="d">
     <Window.Resources>
         <converters:HasItemsToVisibilityConverter x:Key="HasItemsToVisibilityConverter" />

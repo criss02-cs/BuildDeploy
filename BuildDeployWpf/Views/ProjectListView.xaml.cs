@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BuildDeploy.WinUI;
 using BuildDeployWpf.Messages;
+using BuildDeployWpf.Utils;
 using CommunityToolkit.Mvvm.Messaging;
 using Syncfusion.SfSkinManager;
 using Syncfusion.UI.Xaml.Grid;
@@ -44,5 +45,11 @@ public partial class ProjectListView : WinUiWindow
         if (sender is not ScrollViewer scv) return;
         scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
         e.Handled = true;
+    }
+
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+        base.OnSourceInitialized(e);
+        WindowDropShadow.DropShadowToWindow(this);
     }
 }

@@ -1,16 +1,12 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Windows;
-using System.Windows.Data;
 using BuildDeploy.Business.Database;
 using BuildDeploy.Business.Entity;
 using BuildDeploy.Business.Models;
-using BuildDeploy.Business.Utils;
 using BuildDeploy.WinUI;
 using BuildDeployWpf.Extensions;
 using BuildDeployWpf.Messages;
-using BuildDeployWpf.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -79,7 +75,7 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
         if (SelectedProject.Path == null) return;
         if (SelectedProject.DefaultReleasePath.IsNullOrEmpty())
         {
-            var folder = Utils.FindFolderAndSubFolders(SelectedProject.Path);
+            var folder = BuildDeploy.Business.Utils.Utils.FindFolderAndSubFolders(SelectedProject.Path);
             Folders.AddRange([folder]);
         }
         else
@@ -138,7 +134,7 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
         Hierarchy = [HierarchyItem.BuildHierarchyFromPath(SelectedFolder.Path)];
         var files = d.GetFiles("*.*");
         var p = files.Select(x =>
-                new FileInfo(x.FullName, x.Name, Utils.FormatBytes(x.Length), x.LastWriteTime, Tipo.File))
+                new FileInfo(x.FullName, x.Name, BuildDeploy.Business.Utils.Utils.FormatBytes(x.Length), x.LastWriteTime, Tipo.File))
             .ToList();
         if (ShowDirectories)
         {

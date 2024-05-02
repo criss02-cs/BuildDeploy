@@ -14,6 +14,25 @@ public class WinUiWindow : Window
         DefaultStyleKeyProperty.OverrideMetadata(typeof(WinUiWindow), new FrameworkPropertyMetadata(typeof(WinUiWindow)));
     }
 
+    public override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
+        if (Template.FindName("TitleBar", this) is Grid titleBar)
+        {
+            titleBar.MouseLeftButtonDown += (s, e) => DragMove();
+        }
+
+        if (Template.FindName("Close", this) is System.Windows.Controls.Button closeButton)
+        {
+            closeButton.MouseLeftButtonDown += (s, e) => Close();
+        }
+
+        if (Template.FindName("Minimize", this) is System.Windows.Controls.Button minimizeButton)
+        {
+            minimizeButton.MouseLeftButtonDown += (s, e) => WindowState = WindowState.Minimized;
+        }
+    }
+
     public void ShowAlert(string text, string cancelText = "OK")
     {
         if (Template.FindName("Alert", this) is not Modal modal) return;

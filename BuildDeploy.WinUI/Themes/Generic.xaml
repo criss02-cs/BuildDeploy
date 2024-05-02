@@ -31,10 +31,10 @@
     </Style>
 
     <!--  Stili per il pulsante  -->
-    <Style x:Key="DarkButton" TargetType="{x:Type local:Button}" >
+    <Style x:Key="DarkButton" TargetType="{x:Type local:Button}">
         <Setter Property="Background" Value="#2d2d2d" />
     </Style>
-    <Style x:Key="Warning" TargetType="{x:Type local:Button}" >
+    <Style x:Key="Warning" TargetType="{x:Type local:Button}">
         <Setter Property="Background" Value="#f4b100" />
     </Style>
     <Style x:Key="Success" TargetType="{x:Type local:Button}">
@@ -155,7 +155,60 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:WinUiWindow}">
                     <Grid Background="{TemplateBinding Background}">
-                        <local:Modal x:Name="Alert" Panel.ZIndex="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="5*" />
+                        </Grid.RowDefinitions>
+                        <Grid x:Name="TitleBar" VerticalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="150" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center" Text="Icona" />
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Text="{TemplateBinding Title}" />
+                            <StackPanel
+                                Grid.Column="2"
+                                VerticalAlignment="Stretch"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                                <Button
+                                    x:Name="Minimize"
+                                    Width="50"
+                                    Background="Transparent"
+                                    Content="-"
+                                    BorderThickness="0"
+                                    Foreground="White" />
+                                <Button
+                                    Width="50"
+                                    BorderThickness="0"
+                                    Content="X"
+                                    x:Name="Close"
+                                    Cursor="Hand"
+                                    Background="Transparent"
+                                    Foreground="White">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="Red" />
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="False">
+                                                    <Setter Property="Background" Value="Transparent" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                        <local:Modal
+                            x:Name="Alert"
+                            Grid.Row="1"
+                            Panel.ZIndex="10">
                             <Grid Width="300" Background="#2b2b2b">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
@@ -179,7 +232,10 @@
                                 </Grid>
                             </Grid>
                         </local:Modal>
-                        <local:Modal x:Name="ConfirmAlert" Panel.ZIndex="10">
+                        <local:Modal
+                            x:Name="ConfirmAlert"
+                            Grid.Row="1"
+                            Panel.ZIndex="10">
                             <Grid Width="300" Background="#2b2b2b">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
@@ -224,7 +280,7 @@
                                 </Grid>
                             </Grid>
                         </local:Modal>
-                        <ContentPresenter Content="{TemplateBinding Content}" />
+                        <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
