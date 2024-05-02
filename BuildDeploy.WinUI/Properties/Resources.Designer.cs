@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BuildDeployWpf.Properties {
+namespace BuildDeploy.WinUI.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace BuildDeployWpf.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BuildDeployWpf.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BuildDeploy.WinUI.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -76,25 +76,6 @@ namespace BuildDeployWpf.Properties {
         internal static byte[] buildeploy1 {
             get {
                 object obj = ResourceManager.GetObject("buildeploy1", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una stringa localizzata simile a ..\Resources\projects.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089.
-        /// </summary>
-        internal static string projects {
-            get {
-                return ResourceManager.GetString("projects", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Byte[].
-        /// </summary>
-        internal static byte[] segoe_mdl2_assets {
-            get {
-                object obj = ResourceManager.GetObject("segoe-mdl2-assets", resourceCulture);
                 return ((byte[])(obj));
             }
         }

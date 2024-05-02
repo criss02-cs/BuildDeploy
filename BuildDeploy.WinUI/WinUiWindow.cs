@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace BuildDeploy.WinUI;
 public class WinUiWindow : Window
@@ -22,15 +23,21 @@ public class WinUiWindow : Window
             titleBar.MouseLeftButtonDown += (s, e) => DragMove();
         }
 
-        if (Template.FindName("Close", this) is System.Windows.Controls.Button closeButton)
+        if (Template.FindName("Close", this) is Button closeButton)
         {
-            closeButton.MouseLeftButtonDown += (s, e) => Close();
+            closeButton.Click += (s, e) => Close();
         }
 
-        if (Template.FindName("Minimize", this) is System.Windows.Controls.Button minimizeButton)
+        if (Template.FindName("Minimize", this) is Button minimizeButton)
         {
-            minimizeButton.MouseLeftButtonDown += (s, e) => WindowState = WindowState.Minimized;
+            minimizeButton.Click += (s, e) => WindowState = WindowState.Minimized;
         }
+
+        //if (Template.FindName("Icon", this) is SVGImage.SVG.SVGImage icon)
+        //{
+        //    var resource = Application.Current.Resources["buildeploy1"];
+            
+        //}
     }
 
     public void ShowAlert(string text, string cancelText = "OK")

@@ -73,8 +73,32 @@ public class Button : ContentControl
     /// <summary>
     /// Serve per vedere se ho settato un colore particolare, così che non venga sovrascritto da quello di sistema
     /// </summary>
-    private bool CanSetBackground => Style.Setters.All(x => (x as Setter)?.Property != BackgroundProperty);
-    private bool CanSetForeground => Style.Setters.All(x => (x as Setter)?.Property != ForegroundProperty);
+    private bool CanSetBackground
+    {
+        get
+        {
+            if (Style.BasedOn is null)
+            {
+                return Style.Setters.All(x => (x as Setter)?.Property != BackgroundProperty);
+            }
+
+            return Style.Setters.All(x => (x as Setter)?.Property != BackgroundProperty)
+                   && Style.BasedOn.Setters.All(x => (x as Setter)?.Property != BackgroundProperty);
+        }
+    }
+
+    private bool CanSetForeground
+    {
+        get
+        {
+            if (Style.BasedOn is null)
+            {
+                return Style.Setters.All(x => (x as Setter)?.Property != ForegroundProperty);
+            }
+            return Style.Setters.All(x => (x as Setter)?.Property != ForegroundProperty)
+                   && Style.BasedOn.Setters.All(x => (x as Setter)?.Property != ForegroundProperty);
+        }
+    }
     static Button()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(Button), new FrameworkPropertyMetadata(typeof(Button)));

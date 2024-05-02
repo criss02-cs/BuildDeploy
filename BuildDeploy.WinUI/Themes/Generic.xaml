@@ -1,8 +1,9 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:BuildDeploy.WinUI">
-
+    xmlns:local="clr-namespace:BuildDeploy.WinUI"
+    xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+    xmlns:svg="https://github.com/dotnetprojects/SVGImage">
 
     <Style TargetType="{x:Type local:Button}">
         <Setter Property="Template">
@@ -150,6 +151,7 @@
         </Setter>
     </Style>
 
+
     <Style TargetType="{x:Type local:WinUiWindow}">
         <Setter Property="Template">
             <Setter.Value>
@@ -157,52 +159,70 @@
                     <Grid Background="{TemplateBinding Background}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="35" />
-                            <RowDefinition Height="5*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid x:Name="TitleBar" VerticalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="50" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="150" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock VerticalAlignment="Center" Text="Icona" />
+                            <Image Source="{svgc:SvgImage Source=/Resources/buildeploy.svg, AppName=BuildDeploy.WinUI, IncludeRuntime=True}" 
+                                   VerticalAlignment="Center" Height="25" Margin="0,3,0,0"/>
                             <TextBlock
                                 Grid.Column="1"
                                 VerticalAlignment="Center"
                                 Text="{TemplateBinding Title}" />
                             <StackPanel
                                 Grid.Column="2"
+                                HorizontalAlignment="Right"
                                 VerticalAlignment="Stretch"
-                                Orientation="Horizontal"
-                                HorizontalAlignment="Right">
-                                <Button
+                                Panel.ZIndex="25"
+                                Orientation="Horizontal">
+                                <StackPanel.Resources>
+                                    <Style x:Key="DefaultTitle" TargetType="{x:Type local:Button}">
+                                        <Setter Property="Background" Value="#202021" />
+                                        <Setter Property="Height" Value="35" />
+                                        <Setter Property="Foreground" Value="White" />
+                                        <Setter Property="Width" Value="50" />
+                                        <Setter Property="CornerRadius" Value="0" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <local:Button
                                     x:Name="Minimize"
-                                    Width="50"
-                                    Background="Transparent"
-                                    Content="-"
-                                    BorderThickness="0"
-                                    Foreground="White" />
-                                <Button
-                                    Width="50"
-                                    BorderThickness="0"
-                                    Content="X"
+                                    Content="&#xE949;"
+                                    FontFamily="Segoe MDL2 Assets">
+                                    <local:Button.Style>
+                                        <Style BasedOn="{StaticResource DefaultTitle}" TargetType="{x:Type local:Button}">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#191919" />
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="False">
+                                                    <Setter Property="Background" Value="#202021" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </local:Button.Style>
+                                </local:Button>
+                                <local:Button
                                     x:Name="Close"
-                                    Cursor="Hand"
-                                    Background="Transparent"
-                                    Foreground="White">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
+                                    Content="&#xE106;"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    ToolTip="Chiudi">
+                                    <local:Button.Style>
+                                        <Style BasedOn="{StaticResource DefaultTitle}" TargetType="{x:Type local:Button}">
                                             <Style.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter Property="Background" Value="Red" />
                                                 </Trigger>
                                                 <Trigger Property="IsMouseOver" Value="False">
-                                                    <Setter Property="Background" Value="Transparent" />
+                                                    <Setter Property="Background" Value="#202021" />
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </Button.Style>
-                                </Button>
+                                    </local:Button.Style>
+                                </local:Button>
                             </StackPanel>
                         </Grid>
                         <local:Modal
