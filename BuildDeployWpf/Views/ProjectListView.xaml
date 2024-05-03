@@ -83,7 +83,7 @@
     <Window.DataContext>
         <viewModels:ProjectListViewModel />
     </Window.DataContext>
-    <Grid>
+    <Grid x:Name="Grid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="7*" />
@@ -105,6 +105,7 @@
                 Margin="0,0,0,6"
                 Padding="10,0"
                 HorizontalAlignment="Center"
+                x:Name="NewProjectBorder"
                 Command="{Binding AddNewProjectCommand}"
                 Content="Aggiungi un progetto"
                 FontFamily="OpenSansRegular"
@@ -151,62 +152,64 @@
             Margin="10,0,10,10"
             Background="#2a2b2d"
             BorderThickness="0"
-            CornerRadius="0,0,10,10">
-            <ListView
-                x:Name="ListView"
-                Margin="10,0"
-                HorizontalContentAlignment="Stretch"
-                Background="Transparent"
-                BorderThickness="0"
-                ItemContainerStyle="{StaticResource ListItemSelected}"
-                ItemsSource="{Binding Projects}"
-                SelectedItem="{Binding SelectedProject}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding OpenProjectCommand}" CommandParameter="{Binding SelectedItem, ElementName=ListView}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Width="{Binding Source={x:Reference ListView}, Path=Width}" Cursor="Hand">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="5.5*" />
-                                <ColumnDefinition Width="4.5*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <TextBlock
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                FontFamily="OpenSansRegular"
-                                FontSize="14"
-                                Foreground="White"
-                                Text="{Binding Name}" />
-                            <TextBlock
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                HorizontalAlignment="Right"
-                                FontFamily="OpenSansRegular"
-                                FontSize="14"
-                                Foreground="White"
-                                Text="{Binding LastTimeOpened, StringFormat=dd/MM/yyyy HH:mm:ss}" />
-                            <TextBlock
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="2"
-                                Width="345"
-                                Margin="0,2"
-                                HorizontalAlignment="Left"
-                                FontFamily="OpenSansRegular"
-                                Foreground="White"
-                                Text="{Binding Path}"
-                                TextWrapping="Wrap" />
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            CornerRadius="0,0,10,10"
+            x:Name="Projects">
+            <StackPanel x:Name="ProjectStackPanel">
+                <ListView
+                    x:Name="ListView"
+                    Margin="10,0"
+                    HorizontalContentAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    ItemContainerStyle="{StaticResource ListItemSelected}"
+                    ItemsSource="{Binding Projects}"
+                    SelectedItem="{Binding SelectedProject}"
+                    SelectionChanged="ListView_OnSelectionChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="{Binding Source={x:Reference ListView}, Path=Width}" Cursor="Hand">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5.5*" />
+                                    <ColumnDefinition Width="4.5*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    FontFamily="OpenSansRegular"
+                                    FontSize="14"
+                                    Foreground="White"
+                                    Text="{Binding Name}" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Right"
+                                    FontFamily="OpenSansRegular"
+                                    FontSize="14"
+                                    Foreground="White"
+                                    Text="{Binding LastTimeOpened, StringFormat=dd/MM/yyyy HH:mm:ss}" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Width="345"
+                                    Margin="0,2"
+                                    HorizontalAlignment="Left"
+                                    FontFamily="OpenSansRegular"
+                                    Foreground="White"
+                                    Text="{Binding Path}"
+                                    TextWrapping="Wrap" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72A;" HorizontalAlignment="Center"
+                           FontSize="18" Cursor="Hand" Visibility="Collapsed" Opacity="0"
+                           Margin="0,-36,0,0"></TextBlock>
+            </StackPanel>
         </Border>
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
