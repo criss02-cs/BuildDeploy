@@ -18,6 +18,7 @@ using BuildDeployWpf.Messages;
 using BuildDeployWpf.Utils;
 using BuildDeployWpf.ViewModels;
 using CommunityToolkit.Mvvm.Messaging;
+using Syncfusion.Data.Extensions;
 using Syncfusion.SfSkinManager;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeView;
@@ -30,6 +31,8 @@ namespace BuildDeployWpf.Views;
 /// </summary>
 public partial class ProjectListView : WinUiWindow
 {
+    private const string _forwardArrow = "&#xE72A;";
+    private const string _backArrow = "&#xE72B;";
     public ProjectListView()
     {
         InitializeComponent();
@@ -66,11 +69,6 @@ public partial class ProjectListView : WinUiWindow
 
     private void HideProjects()
     {
-        var arrow = new TextBlock();
-        arrow.Text = "&#xE72A;";
-        arrow.Opacity = 0;
-        arrow.FontFamily = new FontFamily("Segoe MDL2 Assets");
-
         var storyBoard = new Storyboard();
 
         var column = Grid.ColumnDefinitions[0]; // Sostituisci con l'indice della colonna che vuoi animare
@@ -107,42 +105,96 @@ public partial class ProjectListView : WinUiWindow
 
         storyBoard.Completed += (s, e) =>
         {
-            ShowArrow();
+            //ShowArrow();
+            foreach(var item in ProjectStackPanel.Children)
+            {
+                switch (item)
+                {
+                    case TextBlock textBlock:
+                        textBlock.Visibility = textBlock.Name switch
+                        {
+                            "Back" => Visibility.Collapsed,
+                            "Forward" => Visibility.Visible,
+                            _ => textBlock.Visibility
+                        };
+                        break;
+                }
+            }
         };
 
         storyBoard.Begin(this,true);
         
     }
 
-    private void ShowArrow()
+    private void Forward_OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if(sender is not TextBlock textBlock) return;
+        if (textBlock.Name == "Back")
+        {
+            HideProjects();
+        }
+        else
+        {
+            ShowProjects();
+        }
+    }
+
+    private void ShowProjects()
     {
         var storyBoard = new Storyboard();
-        foreach (var item in ProjectStackPanel.Children)
+
+        var column = Grid.ColumnDefinitions[0]; // Sostituisci con l'indice della colonna che vuoi animare
+
+        var animation = new GridLengthAnimation
         {
-            switch (item)
+            From = column.Width,
+            To = new GridLength(3, GridUnitType.Star), // Sostituisci con la nuova larghezza desiderata
+            Duration = TimeSpan.FromSeconds(0.5) // Sostituisci con la durata desiderata
+        };
+        storyBoard.Children.Add(animation);
+        Storyboard.SetTarget(animation, column);
+        Storyboard.SetTargetProperty(animation, new PropertyPath(ColumnDefinition.WidthProperty));
+
+        var listViewAnimation = new DoubleAnimation
+        {
+            From = 0,
+            To = 1,
+            Duration = TimeSpan.FromSeconds(0.5)
+        };
+        storyBoard.Children.Add(listViewAnimation);
+        Storyboard.SetTarget(listViewAnimation, ListView);
+        Storyboard.SetTargetProperty(listViewAnimation, new PropertyPath(OpacityProperty));
+
+        var borderAnimation = new DoubleAnimation
+        {
+            From = 0,
+            To = 1,
+            Duration = TimeSpan.FromSeconds(0.5)
+        };
+        storyBoard.Children.Add(borderAnimation);
+        Storyboard.SetTarget(borderAnimation, NewProjectBorder);
+        Storyboard.SetTargetProperty(borderAnimation, new PropertyPath(OpacityProperty));
+
+        storyBoard.Completed += (s, e) =>
+        {
+            //ShowArrow();
+            foreach (var item in ProjectStackPanel.Children)
             {
-                case ListView listView:
-                    listView.Visibility = Visibility.Collapsed;
-                    break;
-                case TextBlock text:
+                switch (item)
                 {
-                    text.Visibility = Visibility.Visible;
-                    var listViewAnimation = new DoubleAnimation
-                    {
-                        From = 0,
-                        To = 1,
-                        Duration = TimeSpan.FromSeconds(0.5)
-                    };
-                    storyBoard.Children.Add(listViewAnimation);
-                    Storyboard.SetTarget(listViewAnimation, text);
-                    Storyboard.SetTargetProperty(listViewAnimation, new PropertyPath(OpacityProperty));
-                    break;
+                    case TextBlock textBlock:
+                        textBlock.Visibility = textBlock.Name switch
+                        {
+                            "Back" => Visibility.Visible,
+                            "Forward" => Visibility.Collapsed,
+                            _ => textBlock.Visibility
+                        };
+                        break;
                 }
             }
-        }
+        };
 
-        ProjectStackPanel.VerticalAlignment = VerticalAlignment.Center;
-        storyBoard.Begin(this);
+        storyBoard.Begin(this, true);
     }
 }
 public class GridLengthAnimation : AnimationTimeline

@@ -154,10 +154,13 @@
             BorderThickness="0"
             CornerRadius="0,0,10,10"
             x:Name="Projects">
-            <StackPanel x:Name="ProjectStackPanel">
+            <Grid x:Name="ProjectStackPanel" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="30"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
                 <ListView
                     x:Name="ListView"
-                    Margin="10,0"
                     HorizontalContentAlignment="Stretch"
                     Background="Transparent"
                     BorderThickness="0"
@@ -195,7 +198,7 @@
                                     Grid.Row="1"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="2"
-                                    Width="345"
+                                    Width="330"
                                     Margin="0,2"
                                     HorizontalAlignment="Left"
                                     FontFamily="OpenSansRegular"
@@ -206,10 +209,16 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72A;" HorizontalAlignment="Center"
-                           FontSize="18" Cursor="Hand" Visibility="Collapsed" Opacity="0"
+                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72B;" HorizontalAlignment="Center"
+                           FontSize="18" Cursor="Hand" Grid.Column="1" ToolTip="Nascondi"
+                           VerticalAlignment="Center" Name="Back" MouseDown="Forward_OnMouseDown"
                            Margin="0,-36,0,0"></TextBlock>
-            </StackPanel>
+                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72A;" HorizontalAlignment="Center"
+                           FontSize="18" Cursor="Hand" Grid.Column="1" ToolTip="Mostra"
+                           VerticalAlignment="Center" Visibility="Collapsed" 
+                           Name="Forward" MouseDown="Forward_OnMouseDown"
+                           Margin="0,-36,0,0"></TextBlock>
+            </Grid>
         </Border>
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
