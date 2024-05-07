@@ -71,6 +71,43 @@ public partial class ProjectListView : WinUiWindow
         await vm.OpenProjectCommand.ExecuteAsync(listView.SelectedItem);
     }
 
+    private void ShowProjects()
+    {
+        var storyBoard = new Storyboard();
+
+        var column = Grid.ColumnDefinitions[0]; // Sostituisci con l'indice della colonna che vuoi animare
+        // animazione per la larghezza della colonna
+        AnimationManager.CreateGridLengthAnimation(column.Width, new GridLength(3, GridUnitType.Star), storyBoard, column,
+            new PropertyPath(ColumnDefinition.WidthProperty));
+
+        // Animazione per l'opacità della listview
+        AnimationManager.CreateDoubleAnimation(0, 1, storyBoard, ListView, new PropertyPath(OpacityProperty));
+
+        // Animazione per l'opacità del border
+        AnimationManager.CreateDoubleAnimation(0, 1, storyBoard, NewProjectBorder, new PropertyPath(OpacityProperty));
+
+        storyBoard.Completed += (s, e) =>
+        {
+            //ShowArrow();
+            foreach (var item in ProjectStackPanel.Children)
+            {
+                switch (item)
+                {
+                    case TextBlock textBlock:
+                        textBlock.Visibility = textBlock.Name switch
+                        {
+                            "Back" => Visibility.Visible,
+                            "Forward" => Visibility.Collapsed,
+                            _ => textBlock.Visibility
+                        };
+                        break;
+                }
+            }
+        };
+
+        storyBoard.Begin(this, true);
+    }
+
     private Task HideProjects()
     {
         var taskCompleted = new TaskCompletionSource<bool>();
@@ -78,35 +115,16 @@ public partial class ProjectListView : WinUiWindow
 
         var column = Grid.ColumnDefinitions[0]; // Sostituisci con l'indice della colonna che vuoi animare
 
-        var animation = new GridLengthAnimation
-        {
-            From = column.Width,
-            To = new GridLength(0.3, GridUnitType.Star), // Sostituisci con la nuova larghezza desiderata
-            Duration = TimeSpan.FromSeconds(AnimationDuration) // Sostituisci con la durata desiderata
-        };
-        storyBoard.Children.Add(animation);
-        Storyboard.SetTarget(animation, column);
-        Storyboard.SetTargetProperty(animation, new PropertyPath(ColumnDefinition.WidthProperty));
+        // animazione per la larghezza della colonna
+        AnimationManager.CreateGridLengthAnimation(column.Width, new GridLength(0.3, GridUnitType.Star), storyBoard, column,
+            new PropertyPath(ColumnDefinition.WidthProperty));
 
-        var listViewAnimation = new DoubleAnimation
-        {
-            From = 1,
-            To = 0,
-            Duration = TimeSpan.FromSeconds(0.2)
-        };
-        storyBoard.Children.Add(listViewAnimation);
-        Storyboard.SetTarget(listViewAnimation, ListView);
-        Storyboard.SetTargetProperty(listViewAnimation, new PropertyPath(OpacityProperty));
+        // Animazione per l'opacità della listview
+        AnimationManager.CreateDoubleAnimation(1, 0, storyBoard, ListView, new PropertyPath(OpacityProperty));
 
-        var borderAnimation = new DoubleAnimation
-        {
-            From = 1,
-            To = 0,
-            Duration = TimeSpan.FromSeconds(AnimationDuration)
-        };
-        storyBoard.Children.Add(borderAnimation);
-        Storyboard.SetTarget(borderAnimation, NewProjectBorder);
-        Storyboard.SetTargetProperty(borderAnimation, new PropertyPath(OpacityProperty));
+        // Animazione per l'opacità del border
+        AnimationManager.CreateDoubleAnimation(1, 0, storyBoard, NewProjectBorder, new PropertyPath(OpacityProperty));
+
 
         storyBoard.Completed += (s, e) =>
         {
@@ -132,7 +150,7 @@ public partial class ProjectListView : WinUiWindow
         storyBoard.Begin(this,true);
         return taskCompleted.Task;
     }
-
+    
     private void Forward_OnMouseDown(object sender, MouseButtonEventArgs e)
     {
         if(sender is not TextBlock textBlock) return;
@@ -144,64 +162,6 @@ public partial class ProjectListView : WinUiWindow
         {
             ShowProjects();
         }
-    }
-
-    private void ShowProjects()
-    {
-        var storyBoard = new Storyboard();
-
-        var column = Grid.ColumnDefinitions[0]; // Sostituisci con l'indice della colonna che vuoi animare
-
-        var animation = new GridLengthAnimation
-        {
-            From = column.Width,
-            To = new GridLength(3, GridUnitType.Star), // Sostituisci con la nuova larghezza desiderata
-            Duration = TimeSpan.FromSeconds(AnimationDuration) // Sostituisci con la durata desiderata
-        };
-        storyBoard.Children.Add(animation);
-        Storyboard.SetTarget(animation, column);
-        Storyboard.SetTargetProperty(animation, new PropertyPath(ColumnDefinition.WidthProperty));
-
-        var listViewAnimation = new DoubleAnimation
-        {
-            From = 0,
-            To = 1,
-            Duration = TimeSpan.FromSeconds(AnimationDuration)
-        };
-        storyBoard.Children.Add(listViewAnimation);
-        Storyboard.SetTarget(listViewAnimation, ListView);
-        Storyboard.SetTargetProperty(listViewAnimation, new PropertyPath(OpacityProperty));
-
-        var borderAnimation = new DoubleAnimation
-        {
-            From = 0,
-            To = 1,
-            Duration = TimeSpan.FromSeconds(AnimationDuration)
-        };
-        storyBoard.Children.Add(borderAnimation);
-        Storyboard.SetTarget(borderAnimation, NewProjectBorder);
-        Storyboard.SetTargetProperty(borderAnimation, new PropertyPath(OpacityProperty));
-
-        storyBoard.Completed += (s, e) =>
-        {
-            //ShowArrow();
-            foreach (var item in ProjectStackPanel.Children)
-            {
-                switch (item)
-                {
-                    case TextBlock textBlock:
-                        textBlock.Visibility = textBlock.Name switch
-                        {
-                            "Back" => Visibility.Visible,
-                            "Forward" => Visibility.Collapsed,
-                            _ => textBlock.Visibility
-                        };
-                        break;
-                }
-            }
-        };
-
-        storyBoard.Begin(this, true);
     }
 }
 public class GridLengthAnimation : AnimationTimeline
