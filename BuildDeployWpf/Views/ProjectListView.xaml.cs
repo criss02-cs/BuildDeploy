@@ -59,12 +59,18 @@ public partial class ProjectListView : WinUiWindow
         WindowDropShadow.DropShadowToWindow(this);
     }
 
-    private void ListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void ListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if(DataContext is not ProjectListViewModel vm) return;
         if (sender is not System.Windows.Controls.ListView listView) return;
-        vm.OpenProjectCommand.ExecuteAsync(listView.SelectedItem);
+        await LoadProjectAndStartAnimation(vm, listView);
+    }
+
+    private async Task LoadProjectAndStartAnimation(ProjectListViewModel vm, ListView listView)
+    {
         HideProjects();
+        await Task.Delay(550);
+        await vm.OpenProjectCommand.ExecuteAsync(listView.SelectedItem);
     }
 
     private void HideProjects()
