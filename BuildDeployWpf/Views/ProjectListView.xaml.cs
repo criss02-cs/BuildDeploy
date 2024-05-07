@@ -31,8 +31,7 @@ namespace BuildDeployWpf.Views;
 /// </summary>
 public partial class ProjectListView : WinUiWindow
 {
-    private const string _forwardArrow = "&#xE72A;";
-    private const string _backArrow = "&#xE72B;";
+    private const double AnimationDuration = 0.2;
     public ProjectListView()
     {
         InitializeComponent();
@@ -68,13 +67,13 @@ public partial class ProjectListView : WinUiWindow
 
     private async Task LoadProjectAndStartAnimation(ProjectListViewModel vm, ListView listView)
     {
-        HideProjects();
-        await Task.Delay(550);
+        await HideProjects();
         await vm.OpenProjectCommand.ExecuteAsync(listView.SelectedItem);
     }
 
-    private void HideProjects()
+    private Task HideProjects()
     {
+        var taskCompleted = new TaskCompletionSource<bool>();
         var storyBoard = new Storyboard();
 
         var column = Grid.ColumnDefinitions[0]; // Sostituisci con l'indice della colonna che vuoi animare
@@ -83,7 +82,7 @@ public partial class ProjectListView : WinUiWindow
         {
             From = column.Width,
             To = new GridLength(0.3, GridUnitType.Star), // Sostituisci con la nuova larghezza desiderata
-            Duration = TimeSpan.FromSeconds(0.5) // Sostituisci con la durata desiderata
+            Duration = TimeSpan.FromSeconds(AnimationDuration) // Sostituisci con la durata desiderata
         };
         storyBoard.Children.Add(animation);
         Storyboard.SetTarget(animation, column);
@@ -93,7 +92,7 @@ public partial class ProjectListView : WinUiWindow
         {
             From = 1,
             To = 0,
-            Duration = TimeSpan.FromSeconds(0.5)
+            Duration = TimeSpan.FromSeconds(0.2)
         };
         storyBoard.Children.Add(listViewAnimation);
         Storyboard.SetTarget(listViewAnimation, ListView);
@@ -103,7 +102,7 @@ public partial class ProjectListView : WinUiWindow
         {
             From = 1,
             To = 0,
-            Duration = TimeSpan.FromSeconds(0.5)
+            Duration = TimeSpan.FromSeconds(AnimationDuration)
         };
         storyBoard.Children.Add(borderAnimation);
         Storyboard.SetTarget(borderAnimation, NewProjectBorder);
@@ -126,10 +125,12 @@ public partial class ProjectListView : WinUiWindow
                         break;
                 }
             }
+
+            taskCompleted.TrySetResult(true);
         };
 
         storyBoard.Begin(this,true);
-        
+        return taskCompleted.Task;
     }
 
     private void Forward_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -155,7 +156,7 @@ public partial class ProjectListView : WinUiWindow
         {
             From = column.Width,
             To = new GridLength(3, GridUnitType.Star), // Sostituisci con la nuova larghezza desiderata
-            Duration = TimeSpan.FromSeconds(0.5) // Sostituisci con la durata desiderata
+            Duration = TimeSpan.FromSeconds(AnimationDuration) // Sostituisci con la durata desiderata
         };
         storyBoard.Children.Add(animation);
         Storyboard.SetTarget(animation, column);
@@ -165,7 +166,7 @@ public partial class ProjectListView : WinUiWindow
         {
             From = 0,
             To = 1,
-            Duration = TimeSpan.FromSeconds(0.5)
+            Duration = TimeSpan.FromSeconds(AnimationDuration)
         };
         storyBoard.Children.Add(listViewAnimation);
         Storyboard.SetTarget(listViewAnimation, ListView);
@@ -175,7 +176,7 @@ public partial class ProjectListView : WinUiWindow
         {
             From = 0,
             To = 1,
-            Duration = TimeSpan.FromSeconds(0.5)
+            Duration = TimeSpan.FromSeconds(AnimationDuration)
         };
         storyBoard.Children.Add(borderAnimation);
         Storyboard.SetTarget(borderAnimation, NewProjectBorder);
