@@ -123,8 +123,9 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
                 SelectedProject.DefaultReleasePath = SelectedFolder.Path;
                 await DbService.Instance.AddOrUpdateProject(SelectedProject);
             }
+            LoadProjectFiles();
         }
-       
+
     }
 
     private void LoadProjectFiles()

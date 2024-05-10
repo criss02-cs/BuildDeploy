@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildDeploy", "BuildDeploy\BuildDeploy.csproj", "{AEC141E0-F161-4E46-8F11-890B2CB19320}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildDeployWpf", "BuildDeployWpf\BuildDeployWpf.csproj", "{1BCA1CC7-3CFF-4693-8109-D2628F57F3C0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildDeploy.WinUI", "BuildDeploy.WinUI\BuildDeploy.WinUI.csproj", "{017BEA95-92E7-4ECB-A537-F0FABD98997F}"
@@ -23,30 +21,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Debug|ARM64.Deploy.0 = Debug|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Debug|x64.Build.0 = Debug|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Debug|x64.Deploy.0 = Debug|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Debug|x86.Build.0 = Debug|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Debug|x86.Deploy.0 = Debug|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Release|ARM64.Build.0 = Release|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Release|ARM64.Deploy.0 = Release|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Release|x64.ActiveCfg = Release|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Release|x64.Build.0 = Release|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Release|x64.Deploy.0 = Release|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Release|x86.ActiveCfg = Release|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Release|x86.Build.0 = Release|Any CPU
-		{AEC141E0-F161-4E46-8F11-890B2CB19320}.Release|x86.Deploy.0 = Release|Any CPU
 		{1BCA1CC7-3CFF-4693-8109-D2628F57F3C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1BCA1CC7-3CFF-4693-8109-D2628F57F3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BCA1CC7-3CFF-4693-8109-D2628F57F3C0}.Debug|ARM64.ActiveCfg = Debug|Any CPU

@@ -25,4 +25,6 @@ public class Project
     /// Property che rappresenta il percorso locale di dove si trova la build in release
     /// </summary>
     public string? DefaultReleasePath { get; set; }
+    public int? FtpProfileId { get; set; }
+    public virtual FtpProfile? FtpProfile { get; set; }
 }
