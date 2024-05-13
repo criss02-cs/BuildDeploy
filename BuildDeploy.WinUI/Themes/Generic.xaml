@@ -33,7 +33,7 @@
 
     <!--  Stili per il pulsante  -->
     <Style x:Key="DarkButton" TargetType="{x:Type local:Button}">
-        <Setter Property="Background" Value="#2d2d2d" />
+        <Setter Property="Background" Value="#373939" />
     </Style>
     <Style x:Key="Warning" TargetType="{x:Type local:Button}">
         <Setter Property="Background" Value="#f4b100" />

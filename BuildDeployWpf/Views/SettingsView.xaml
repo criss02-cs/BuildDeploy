@@ -1,0 +1,68 @@
+﻿<winUi:WinUiWindow
+    x:Class="BuildDeployWpf.Views.SettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:BuildDeployWpf.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:winUi="clr-namespace:BuildDeploy.WinUI;assembly=BuildDeploy.WinUI"
+    xmlns:wpf="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
+    Title="Impostazioni"
+    Width="1024"
+    Height="768"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    syncfusion:SfSkinManager.Theme="{syncfusion:SkinManagerExtension ThemeName=Windows11Dark}"
+    Background="#202021"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="7*" />
+        </Grid.ColumnDefinitions>
+        <Border
+            Margin="10"
+            Padding="5"
+            Background="#2a2b2d"
+            CornerRadius="10">
+            <ListView
+                Background="Transparent"
+                BorderThickness="0"
+                ItemContainerStyle="{StaticResource SelectedItem}"
+                SelectedIndex="0"
+                SelectionChanged="ListView_OnSelectionChanged"
+                x:Name="ListView">
+                <ListView.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="White" />
+                    </Style>
+                </ListView.Resources>
+                <ListView.Items>
+                    <TextBlock FontSize="14" Cursor="Hand">Generale</TextBlock>
+                    <TextBlock FontSize="14" Cursor="Hand">Impostazioni FTP</TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <wpf:MaterialIcon Kind="MenuRight" Cursor="Hand" MouseDown="UIElement_OnMouseDown"></wpf:MaterialIcon>
+                        <TextBlock FontSize="14" Cursor="Hand" VerticalAlignment="Center">Linguaggi</TextBlock>
+                    </StackPanel>
+                    <TextBlock FontSize="14" Cursor="Hand" Margin="40,0,0,0" HorizontalAlignment="Stretch" Visibility="Collapsed">C#</TextBlock>
+                    <TextBlock FontSize="14" Cursor="Hand" Margin="40,0,0,0" Visibility="Collapsed">Angular</TextBlock>
+
+                </ListView.Items>
+            </ListView>
+        </Border>
+        <Border
+            Grid.Column="1"
+            Margin="10"
+            Background="#2a2b2d"
+            CornerRadius="10"
+            Padding="10,0"
+            x:Name="CurrentSetting"/>
+    </Grid>
+</winUi:WinUiWindow>

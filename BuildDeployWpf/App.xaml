@@ -33,9 +33,55 @@
                 </Trigger>
             </Style.Triggers>
         </Style>-->
+
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary x:Name="WinUIStyles" Source="pack://application:,,,/BuildDeploy.WinUI;component/Themes/Generic.xaml" />
+                <ResourceDictionary>
+                    <Style x:Key="SelectedItem" TargetType="ListViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Grid>
+                                        <Border
+                                            Name="LeftBd"
+                                            Width="3"
+                                            Height="20"
+                                            HorizontalAlignment="Left"
+                                            Panel.ZIndex="5"
+                                            CornerRadius="2" />
+                                        <Border
+                                            Name="Bd"
+                                            Padding="10,5"
+                                            CornerRadius="5"
+                                            SnapsToDevicePixels="true">
+                                            <ContentPresenter
+                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        </Border>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Bd" Property="Background" Value="#3d3d3d" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="LeftBd" Property="Background" Value="{x:Static SystemParameters.WindowGlassBrush}" />
+                                            <Setter TargetName="Bd" Property="Background" Value="#3d3d3d" />
+                                        </Trigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsSelected" Value="True" />
+                                                <Condition Property="IsMouseOver" Value="True" />
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="Bd" Property="Background" Value="#292929" />
+                                        </MultiTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

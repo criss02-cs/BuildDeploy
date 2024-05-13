@@ -12,6 +12,7 @@
     xmlns:models="clr-namespace:BuildDeploy.Business.Models;assembly=BuildDeploy.Business"
     xmlns:viewModels="clr-namespace:BuildDeployWpf.ViewModels"
     xmlns:winUi="clr-namespace:BuildDeploy.WinUI;assembly=BuildDeploy.WinUI"
+    xmlns:wpf="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
     Title="Build and Deploy"
     Width="1366"
     Height="768"
@@ -56,7 +57,7 @@
                                 <Setter TargetName="Bd" Property="Background" Value="#3d3d3d" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="LeftBd" Property="Background" Value="#4cc2ff" />
+                                <Setter TargetName="LeftBd" Property="Background" Value="{x:Static SystemParameters.WindowGlassBrush}" />
                                 <Setter TargetName="Bd" Property="Background" Value="#3d3d3d" />
                             </Trigger>
                             <MultiTrigger>
@@ -120,7 +121,7 @@
             Background="#2a2b2d"
             BorderThickness="0"
             CornerRadius="10">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                 <winUi:Button
                     Name="Build"
                     Height="32"
@@ -144,6 +145,27 @@
                     FontSize="14"
                     Style="{StaticResource Success}"
                     Visibility="{Binding ShowDeployButton, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <ComboBox BorderThickness="0" SelectionChanged="Selector_OnSelectionChanged"
+                          ItemsSource="{Binding FtpProfiles}" Height="32" HorizontalAlignment="Right">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type entity:FtpProfile}">
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <winUi:Button
+                    Name="Settings"
+                    Height="32"
+                    Margin="10,0"
+                    Padding="0"
+                    HorizontalAlignment="Right"
+                    FontFamily="OpenSansRegular"
+                    FontSize="14"
+                    ToolTip="Impostazioni"
+                    Style="{StaticResource DarkButton}"
+                    Click="Settings_OnClick">
+                    <wpf:MaterialIcon Kind="Cog" Margin="5" Foreground="White"></wpf:MaterialIcon>
+                </winUi:Button>
             </StackPanel>
         </Border>
         <Border

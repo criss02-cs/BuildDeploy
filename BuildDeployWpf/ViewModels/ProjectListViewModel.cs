@@ -15,6 +15,8 @@ using FileInfo = BuildDeploy.Business.Models.FileInfo;
 namespace BuildDeployWpf.ViewModels;
 public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
 {
+    #region Observable Properties
+
     [ObservableProperty] private ObservableCollection<Project> _projects = [];
     [ObservableProperty] private ObservableCollection<Folder> _folders = [];
     [ObservableProperty, NotifyPropertyChangedFor(nameof(ShowDataGrid))] private ObservableCollection<FileInfo> _projectFiles = [];
@@ -22,9 +24,20 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
     [ObservableProperty, NotifyPropertyChangedFor(nameof(ShowDeployButton))] private Folder _selectedFolder = new();
     [ObservableProperty] private bool _showDirectories = true;
     [ObservableProperty] private ObservableCollection<HierarchyItem> _hierarchy = [];
+    [ObservableProperty] private ObservableCollection<FtpProfile> _ftpProfiles = [];
+
+    #endregion
+
+    #region Public Properties
+
     public bool ShowDataGrid => ProjectFiles.Count > 0;
     public bool ShowBuildButton => SelectedProject.Id != 0;
     public bool ShowDeployButton => !SelectedFolder.Name.IsNullOrEmpty();
+
+    #endregion
+
+
+    private readonly FtpProfilesManager _ftpProfilesManager = new();
 
 
     public ProjectListViewModel()
@@ -32,17 +45,13 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
         WeakReferenceMessenger.Default.Register(this);
     }
 
+    #region Commands
 
     [RelayCommand]
     private async Task LoadProjects()
     {
         var projects = await DbService.Instance.GetAllProjects(x => x.LastTimeOpened, true)!;
         Projects.AddRange(projects);
-    }
-
-    public void Receive(Appearing message)
-    {
-        Task.Run(LoadProjects);
     }
 
     [RelayCommand]
@@ -69,30 +78,10 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
         LoadFolders();
     }
 
-
-    private void LoadFolders()
-    {
-        if (SelectedProject.Path == null) return;
-        if (SelectedProject.DefaultReleasePath.IsNullOrEmpty())
-        {
-            var folder = BuildDeploy.Business.Utils.Utils.FindFolderAndSubFolders(SelectedProject.Path);
-            Folders.AddRange([folder]);
-        }
-        else
-        {
-            SelectedFolder = new Folder
-            {
-                Path = SelectedProject.DefaultReleasePath
-            };
-            SelectedFolder.Name = Path.GetDirectoryName(SelectedFolder.Path);
-            LoadProjectFiles();
-        }
-    }
-
     [RelayCommand]
     private Task OpenProject(object param)
     {
-        return Task.Run(async () =>
+        var openProjectTask = new Task(async () =>
         {
             if (param is not Project project) return;
             project.LastTimeOpened = DateTime.Now;
@@ -104,6 +93,8 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
             Folders = [];
             LoadFolders();
         });
+        var loadFtpProfiles = LoadFtpProfiles();
+        return Task.WhenAll(openProjectTask, loadFtpProfiles);
     }
 
     [RelayCommand]
@@ -128,6 +119,43 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
 
     }
 
+    #endregion
+
+    public void Receive(Appearing message)
+    {
+        Task.Run(LoadProjects);
+    }
+
+    private void LoadFolders()
+    {
+        if (SelectedProject.Path == null) return;
+        if (SelectedProject.DefaultReleasePath.IsNullOrEmpty())
+        {
+            var folder = BuildDeploy.Business.Utils.Utils.FindFolderAndSubFolders(SelectedProject.Path);
+            Folders.AddRange([folder]);
+        }
+        else
+        {
+            SelectedFolder = new Folder
+            {
+                Path = SelectedProject.DefaultReleasePath
+            };
+            SelectedFolder.Name = Path.GetDirectoryName(SelectedFolder.Path);
+            LoadProjectFiles();
+        }
+    }
+    
+    private async Task LoadFtpProfiles()
+    {
+        var profiles = await _ftpProfilesManager.GetAllProfiles();
+        profiles.Insert(0, new FtpProfile
+        {
+            Name = "",
+            Id = 0
+        });
+        FtpProfiles.AddRange(profiles);
+    }
+    
     private void LoadProjectFiles()
     {
         if (SelectedFolder.Path == null) return;

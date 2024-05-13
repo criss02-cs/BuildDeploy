@@ -23,6 +23,7 @@ using Syncfusion.SfSkinManager;
 using Syncfusion.UI.Xaml.Grid;
 using Syncfusion.UI.Xaml.TreeView;
 using Syncfusion.Windows.Tools.Controls;
+using ComboBox = System.Windows.Controls.ComboBox;
 using SelectionChangedEventArgs = System.Windows.Controls.SelectionChangedEventArgs;
 
 namespace BuildDeployWpf.Views;
@@ -108,7 +109,7 @@ public partial class ProjectListView : WinUiWindow
         storyBoard.Begin(this, true);
     }
 
-    private Task HideProjects()
+    private Task<bool> HideProjects()
     {
         var taskCompleted = new TaskCompletionSource<bool>();
         var storyBoard = new Storyboard();
@@ -162,6 +163,16 @@ public partial class ProjectListView : WinUiWindow
         {
             ShowProjects();
         }
+    }
+
+    private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+    }
+
+    private void Settings_OnClick(object? sender, EventArgs e)
+    {
+        var settings = new SettingsView();
+        settings.ShowDialog();
     }
 }
 public class GridLengthAnimation : AnimationTimeline
