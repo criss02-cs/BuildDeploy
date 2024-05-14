@@ -1,4 +1,5 @@
-﻿using BuildDeploy.Business.Entity;
+﻿using System.Reflection;
+using BuildDeploy.Business.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BuildDeploy.Business.Database;
@@ -11,7 +12,13 @@ public class DatabaseContext : DbContext
     public DbSet<FtpProfile> FtpProfiles { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source = BuildDeploy.db");
+        // usa la path di AppData del pc
+        var path = Path.Combine(Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "BuildDeploy");
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        } 
+        optionsBuilder.UseSqlite($"Data Source = {Path.Combine(path, "BuildDeploy.db")}");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
