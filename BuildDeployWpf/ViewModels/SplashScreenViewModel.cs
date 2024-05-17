@@ -52,6 +52,18 @@ public partial class SplashScreenViewModel : BaseViewModel
             UseShellExecute = false,
             CreateNoWindow = true
         };
+        //ProcessStartInfo psi = new ProcessStartInfo();
+        //psi.FileName = "dotnet";
+        //psi.Arguments = "--info";
+        //psi.RedirectStandardOutput = true;
+        //psi.UseShellExecute = false;
+
+        //Process? p = Process.Start(psi);
+        //p.OutputDataReceived += (sender, data) => {
+        //    Console.WriteLine(data.Data);
+        //};
+        //p.BeginOutputReadLine();
+        //p.WaitForExit();
         process.StartInfo = startInfo;
         process.Start();
         var output = await process.StandardOutput.ReadToEndAsync();

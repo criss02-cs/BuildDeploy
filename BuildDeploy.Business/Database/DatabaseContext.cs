@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text.Json;
 using BuildDeploy.Business.Entity;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,5 +31,11 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<FtpProfile>()
             .HasMany(x => x.Projects)
             .WithOne(x => x.FtpProfile);
+
+        modelBuilder.Entity<Language>()
+            .Property(e => e.ArgumentsJson)
+            .HasConversion(
+                v => JsonSerializer.Serialize(v),
+                v => JsonSerializer.Deserialize<Dictionary<string, string>>(v));
     }
 }
