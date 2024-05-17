@@ -1,0 +1,18 @@
+[
+  {
+    "id": 0,
+    "name": "C#",
+    "executableName": "dotnet",
+    "buildCommand": "dotnet publish",
+    "argumentsJson": "[{\"configuration\":\"\"},{\"output\":\"\"}]",
+    "isJavascriptFramework": false
+  },
+  {
+    "id": 1,
+    "name": "Angular",
+    "executableName": "ng",
+    "buildCommand": "ng build",
+    "argumentsJson": "[{\"base-href\":\"\"},{\"prod\":\"\"}]",
+    "isJavascriptFramework": true
+  }
+]

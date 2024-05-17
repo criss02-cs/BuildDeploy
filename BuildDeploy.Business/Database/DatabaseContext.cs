@@ -11,6 +11,7 @@ public class DatabaseContext : DbContext
 
     public DbSet<Project> Projects { get; set; }
     public DbSet<FtpProfile> FtpProfiles { get; set; }
+    public DbSet<Language> Languages { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // usa la path di AppData del pc
@@ -28,14 +29,17 @@ public class DatabaseContext : DbContext
             .HasOne(x => x.FtpProfile)
             .WithMany(x => x.Projects)
             .HasForeignKey(x => x.FtpProfileId);
+        modelBuilder.Entity<Project>()
+            .HasOne(x => x.Language)
+            .WithMany(x => x.Projects)
+            .HasForeignKey(x => x.LanguageId);
         modelBuilder.Entity<FtpProfile>()
             .HasMany(x => x.Projects)
             .WithOne(x => x.FtpProfile);
-
         modelBuilder.Entity<Language>()
-            .Property(e => e.ArgumentsJson)
-            .HasConversion(
-                v => JsonSerializer.Serialize(v),
-                v => JsonSerializer.Deserialize<Dictionary<string, string>>(v));
+            .HasMany(x => x.Projects)
+            .WithOne(x => x.Language);
+        modelBuilder.Entity<Language>()
+            .Ignore(x => x.Arguments);
     }
 }

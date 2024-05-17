@@ -1,15 +1,21 @@
 ﻿using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Navigation;
+using BuildDeploy.Business.Database;
+using BuildDeployWpf.Properties;
 using BuildDeployWpf.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Language = BuildDeploy.Business.Entity.Language;
 
 namespace BuildDeployWpf.ViewModels;
 public partial class SplashScreenViewModel : BaseViewModel
 {
     [ObservableProperty] private string _status = "Inizio controllo .NET";
-
+    private readonly LanguagesManager _languageManager = new();
 
     [RelayCommand]
     private async Task CheckDotNetVersion()
@@ -30,7 +36,7 @@ public partial class SplashScreenViewModel : BaseViewModel
         try
         {
             var version = new Version(output.Trim());
-            GoToMainPage();
+            
         }
         catch (ArgumentException)
         {
@@ -39,6 +45,23 @@ public partial class SplashScreenViewModel : BaseViewModel
                 MessageBoxButton.OK);
             Application.Current.Shutdown();
         }
+        Status = "Inizializzando il database";
+        await TryInitializeDatabase();
+
+        GoToMainPage();
+    }
+
+    private async Task TryInitializeDatabase()
+    {
+        //var assembly = Assembly.GetExecutingAssembly();
+        //var names = Assembly.GetExecutingAssembly().GetManifestResourceNames();
+        //await using var stream = assembly.GetManifestResourceStream("BuildDeployWpf.Properties.Resources.resources");
+        //using var reader = new StreamReader(stream);
+        //var json = await reader.ReadToEndAsync();
+        var json = Resources.languages;
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var defaultLanguages = JsonSerializer.Deserialize<List<Language>>(json, options);
+        if (defaultLanguages != null) await _languageManager.InitDatabase(defaultLanguages);
     }
 
     private static async Task<string> GetDotNetVersion()

@@ -149,7 +149,7 @@
                           ItemsSource="{Binding FtpProfiles}" Height="32" HorizontalAlignment="Right">
                     <ComboBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type entity:FtpProfile}">
-                            <TextBlock Text="{Binding Name}"></TextBlock>
+                            <TextBlock Text="{Binding Name}" FontSize="14"></TextBlock>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ using BuildDeployWpf.Utils;
 using Windows.Globalization;
 using Material.Icons;
 using Material.Icons.WPF;
+using ColorConverter = System.Windows.Media.ColorConverter;
 
 namespace BuildDeployWpf.Views;
 /// <summary>
@@ -64,21 +66,63 @@ public partial class SettingsView : WinUiWindow
     private void ListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is not ListView listView) return;
-        if(listView.SelectedItem is not TextBlock textBlock) return;
-        if (textBlock.Text is "Impostazioni FTP")
+        if (listView.SelectedItem is StackPanel)
         {
-            CurrentSetting.Child = new FtpSettingsView();
+            CurrentSetting.Child = CreateViewForLanguages();
         }
-        //if (listView.SelectedItem is not Language language) return;
-        //if (language.Languages.Count is 0) return;
-        //if (language.Languages[0].Header is "C#")
-        //{
-        //    MessageBox.Show("C#");
-        //}
-        //else if (language.Languages[0].Header is "Angular")
-        //{
-        //    MessageBox.Show("Angular");
-        //}
+        if(listView.SelectedItem is not TextBlock textBlock) return;
+        switch (textBlock.Text)
+        {
+            case "Impostazioni FTP":
+                CurrentSetting.Child = new FtpSettingsView();
+                break;
+            case "Linguaggi":
+                CurrentSetting.Child = CreateViewForLanguages();
+                break;
+            default:
+                //CurrentSetting.Child = new StackPanel();
+                break;
+        }
+    }
+
+    private UIElement CreateViewForLanguages()
+    {
+        var stackPanel = new StackPanel();
+        var title = new TextBlock();
+        title.Text = "Linguaggi";
+        title.FontSize = 25;
+        title.FontWeight = FontWeights.Bold;
+
+        var subTitle = new TextBlock();
+        subTitle.Text = "Configura le impostazione relative ai specifici linguaggi";
+        subTitle.FontSize = 14;
+        subTitle.Margin = new Thickness(0, 10, 0, 0);
+        var language = new TextBlock();
+        language.Text = "C#";
+        language.Margin = new Thickness(15, 10, 0, 0);
+        language.FontSize = 14;
+        language.Cursor = Cursors.Hand;
+        language.Foreground = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString("#6b9bfa"));
+        language.TextDecorations = new TextDecorationCollection
+        {
+            TextDecorations.Underline
+        };
+        var language1 = new TextBlock();
+        language1.FontSize = 14;
+        language1.Text = "Angular";
+        language1.Cursor = Cursors.Hand;
+        language1.TextDecorations = new TextDecorationCollection
+        {
+            TextDecorations.Underline
+        };
+        language1.Margin = new Thickness(15, 0, 0, 0);
+        language1.Foreground = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString("#6b9bfa"));
+        stackPanel.Children.Add(title);
+        stackPanel.Children.Add(subTitle);
+
+        stackPanel.Children.Add(language);
+        stackPanel.Children.Add(language1);
+        return stackPanel;
     }
 }
 

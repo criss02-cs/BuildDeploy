@@ -1,46 +1,135 @@
-﻿<UserControl x:Class="BuildDeployWpf.Views.FtpSettingsView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:BuildDeployWpf.Views"
-             xmlns:entity="clr-namespace:BuildDeploy.Business.Entity;assembly=BuildDeploy.Business"
-             xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-             xmlns:viewModels="clr-namespace:BuildDeployWpf.ViewModels"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl
+    x:Class="BuildDeployWpf.Views.FtpSettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:entity="clr-namespace:BuildDeploy.Business.Entity;assembly=BuildDeploy.Business"
+    xmlns:local="clr-namespace:BuildDeployWpf.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:BuildDeployWpf.ViewModels"
+    xmlns:wpf="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
     <UserControl.DataContext>
         <viewModels:FtpSettingsViewModel />
     </UserControl.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Text="Profili FTP" FontSize="25" Foreground="White" FontWeight="Bold"
-                   VerticalAlignment="Center"></TextBlock>
-        <syncfusion:SfAccordion Grid.Row="1" ItemsSource="{Binding FtpProfiles}"
-                                >
+        <TextBlock
+            VerticalAlignment="Center"
+            FontSize="25"
+            FontWeight="Bold"
+            Foreground="White"
+            Text="Profili FTP" />
+        <syncfusion:SfAccordion Grid.Row="1" ItemsSource="{Binding FtpProfiles}">
+            <syncfusion:SfAccordion.ItemContainerStyle>
+                <Style TargetType="syncfusion:SfAccordionItem">
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="AccordionButtonStyle">
+                        <Setter.Value>
+                            <Style TargetType="syncfusion:AccordionButton">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="syncfusion:AccordionButton">
+                                            <Border
+                                                Padding="5,5,5,0"
+                                                Background="#292929"
+                                                BorderBrush="#292929"
+                                                BorderThickness="0"
+                                                CornerRadius="10,10,0,0">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="30" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <ContentPresenter
+                                                        Margin="5,0,0,0"
+                                                        Content="{TemplateBinding Content}"
+                                                        ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                                    <wpf:MaterialIcon Grid.Column="1" Kind="MenuDown" />
+                                                </Grid>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </syncfusion:SfAccordion.ItemContainerStyle>
             <syncfusion:SfAccordion.HeaderTemplate>
                 <DataTemplate DataType="{x:Type entity:FtpProfile}">
-                    <TextBlock Text="{Binding Name}" ></TextBlock>
+                    <StackPanel>
+                        <TextBlock
+                            Height="30"
+                            VerticalAlignment="Center"
+                            FontSize="14"
+                            FontWeight="Bold"
+                            Text="{Binding Name}" />
+                    </StackPanel>
                 </DataTemplate>
             </syncfusion:SfAccordion.HeaderTemplate>
             <syncfusion:SfAccordion.ContentTemplate>
                 <DataTemplate DataType="{x:Type entity:FtpProfile}">
-                    <Grid Margin="0,10">
+                    <Grid Margin="0,5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="7*"></ColumnDefinition>
-                            <ColumnDefinition Width="3*"></ColumnDefinition>
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="5*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="50"></RowDefinition>
-                            <RowDefinition Height="50"></RowDefinition>
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="50" />
                         </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding Hostname}" ></TextBlock>
-                        <TextBlock Text="{Binding Port}" Grid.Row="0" Grid.Column="1" ></TextBlock>
-                        <TextBlock Text="{Binding Username}" Grid.Row="1" Grid.Column="0" ></TextBlock>
-                        <TextBlock Text="{Binding Password}" Grid.Row="1" Grid.Column="1" ></TextBlock>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="7*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center" Text="Host name" FontSize="14" />
+                            <TextBox
+                                Grid.Column="1"
+                                Height="30"
+                                Text="{Binding Hostname}"  FontSize="14"/>
+                        </Grid>
+                        <Grid Grid.Row="0" Grid.Column="1" Margin="10,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="7*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center" Text="Port"  FontSize="14" />
+                            <TextBox
+                                Grid.Column="1"
+                                Height="30"
+                                Text="{Binding Port}"  FontSize="14" />
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="7*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center" Text="Username"  FontSize="14" />
+                            <TextBox
+                                Grid.Column="1"
+                                Height="30"
+                                Text="{Binding Username}"  FontSize="14" />
+                        </Grid>
+                        <Grid Grid.Row="1" Grid.Column="1" Margin="10,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="7*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center" Text="Password"  FontSize="14"/>
+                            <TextBox
+                                Grid.Column="1"
+                                Height="30"
+                                Text="{Binding Password}"  FontSize="14">
+                            </TextBox>
+                        </Grid>
                     </Grid>
                 </DataTemplate>
             </syncfusion:SfAccordion.ContentTemplate>

@@ -27,4 +27,6 @@ public class Project
     public string? DefaultReleasePath { get; set; }
     public int? FtpProfileId { get; set; }
     public virtual FtpProfile? FtpProfile { get; set; }
+    public int LanguageId { get; set; }
+    public virtual Language? Language { get; set; }
 }

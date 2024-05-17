@@ -81,11 +81,28 @@ namespace BuildDeployWpf.Properties {
         }
         
         /// <summary>
-        ///   Cerca una stringa localizzata simile a ..\Resources\projects.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089.
+        ///   Cerca una stringa localizzata simile a [
+        ///  {
+        ///    &quot;id&quot;: 0,
+        ///    &quot;name&quot;: &quot;C#&quot;,
+        ///    &quot;executableName&quot;: &quot;dotnet&quot;,
+        ///    &quot;buildCommand&quot;: &quot;dotnet publish&quot;,
+        ///    &quot;argumentsJson&quot;: &quot;[{\&quot;configuration\&quot;:\&quot;\&quot;},{\&quot;output\&quot;:\&quot;\&quot;}]&quot;,
+        ///    &quot;isJavascriptFramework&quot;: false
+        ///  },
+        ///  {
+        ///    &quot;id&quot;: 1,
+        ///    &quot;name&quot;: &quot;Angular&quot;,
+        ///    &quot;executableName&quot;: &quot;ng&quot;,
+        ///    &quot;buildCommand&quot;: &quot;ng build&quot;,
+        ///    &quot;argumentsJson&quot;: &quot;[{\&quot;base-href\&quot;:\&quot;\&quot;},{\&quot;prod\&quot;:\&quot;\&quot;}]&quot;,
+        ///    &quot;isJavascriptFramework&quot;: true
+        ///  }
+        ///].
         /// </summary>
-        internal static string projects {
+        internal static string languages {
             get {
-                return ResourceManager.GetString("projects", resourceCulture);
+                return ResourceManager.GetString("languages", resourceCulture);
             }
         }
         
