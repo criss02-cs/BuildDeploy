@@ -127,7 +127,7 @@
   <data name="languages" xml:space="preserve">
     <value>[
   {
-    "id": 0,
+    "id": 1,
     "name": "C#",
     "executableName": "dotnet",
     "buildCommand": "dotnet publish",
@@ -135,7 +135,7 @@
     "isJavascriptFramework": false
   },
   {
-    "id": 1,
+    "id": 2,
     "name": "Angular",
     "executableName": "ng",
     "buildCommand": "ng build",

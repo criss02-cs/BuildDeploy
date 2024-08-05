@@ -51,9 +51,6 @@
                         <wpf:MaterialIcon Kind="MenuRight" Cursor="Hand" MouseDown="UIElement_OnMouseDown"></wpf:MaterialIcon>
                         <TextBlock FontSize="14" Cursor="Hand" VerticalAlignment="Center">Linguaggi</TextBlock>
                     </StackPanel>
-                    <TextBlock FontSize="14" Cursor="Hand" Margin="40,0,0,0" HorizontalAlignment="Stretch" Visibility="Collapsed">C#</TextBlock>
-                    <TextBlock FontSize="14" Cursor="Hand" Margin="40,0,0,0" Visibility="Collapsed">Angular</TextBlock>
-
                 </ListView.Items>
             </ListView>
         </Border>

@@ -16,9 +16,11 @@ using System.Windows.Shapes;
 using BuildDeploy.WinUI;
 using BuildDeployWpf.Utils;
 using Windows.Globalization;
+using BuildDeploy.Business.Database;
 using Material.Icons;
 using Material.Icons.WPF;
 using ColorConverter = System.Windows.Media.ColorConverter;
+using Language = BuildDeploy.Business.Entity.Language;
 
 namespace BuildDeployWpf.Views;
 /// <summary>
@@ -26,20 +28,32 @@ namespace BuildDeployWpf.Views;
 /// </summary>
 public partial class SettingsView : WinUiWindow
 {
-    public ObservableCollection<Language> Languages =
-    [
-        new Language("Linguaggi")
-        {
-            Languages =
-            [
-                new Language("C#"),
-                new Language("Angular")
-            ]
-        }
-    ];
+
+    private readonly LanguagesManager _languagesManager = new();
+    private List<Language> _languagesList = new();
     public SettingsView()
     {
         InitializeComponent();
+        LoadLanguages();
+    }
+
+    private async Task LoadLanguages()
+    {
+        _languagesList = await _languagesManager.GetAllLanguages();
+        foreach (var language in _languagesList)
+        {
+            var textBlock = new TextBlock
+            {
+                FontSize = 14,
+                Cursor = Cursors.Hand,
+                Margin = new Thickness(40,0,0,0),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Visibility = Visibility.Collapsed,
+                Text = language.Name
+            };
+            this.ListView.Items.Add(textBlock);
+                //< TextBlock FontSize = "14" Cursor = "Hand" Margin = "40,0,0,0" HorizontalAlignment = "Stretch" Visibility = "Collapsed" > C#</TextBlock>
+        }
     }
     protected override void OnSourceInitialized(EventArgs e)
     {
@@ -56,14 +70,14 @@ public partial class SettingsView : WinUiWindow
         foreach (var item in this.ListView.Items)
         {
             if(item is not TextBlock textBlock) continue;
-            if(textBlock.Text is "C#" or "Angular")
+            if(_languagesList.Select(x => x.Name).ToList().Contains(textBlock.Text))
                 textBlock.Visibility = textBlock.Visibility == Visibility.Visible
                     ? Visibility.Collapsed
                     : Visibility.Visible;
         }
     }
 
-    private void ListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void ListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is not ListView listView) return;
         if (listView.SelectedItem is StackPanel)
@@ -97,37 +111,24 @@ public partial class SettingsView : WinUiWindow
         subTitle.Text = "Configura le impostazione relative ai specifici linguaggi";
         subTitle.FontSize = 14;
         subTitle.Margin = new Thickness(0, 10, 0, 0);
-        var language = new TextBlock();
-        language.Text = "C#";
-        language.Margin = new Thickness(15, 10, 0, 0);
-        language.FontSize = 14;
-        language.Cursor = Cursors.Hand;
-        language.Foreground = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString("#6b9bfa"));
-        language.TextDecorations = new TextDecorationCollection
-        {
-            TextDecorations.Underline
-        };
-        var language1 = new TextBlock();
-        language1.FontSize = 14;
-        language1.Text = "Angular";
-        language1.Cursor = Cursors.Hand;
-        language1.TextDecorations = new TextDecorationCollection
-        {
-            TextDecorations.Underline
-        };
-        language1.Margin = new Thickness(15, 0, 0, 0);
-        language1.Foreground = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString("#6b9bfa"));
         stackPanel.Children.Add(title);
         stackPanel.Children.Add(subTitle);
-
-        stackPanel.Children.Add(language);
-        stackPanel.Children.Add(language1);
+        foreach (var linguaggio in _languagesList)
+        {
+            var textBlock = new TextBlock
+            {
+                Text = linguaggio.Name,
+                FontSize = 14,
+                Cursor = Cursors.Hand,
+                Foreground = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString("#6b9bfa")),
+                TextDecorations = new TextDecorationCollection
+                {
+                    TextDecorations.Underline
+                },
+                Margin = new Thickness(15, 10, 0, 0)
+            };
+            stackPanel.Children.Add(textBlock);
+        }
         return stackPanel;
     }
-}
-
-public class Language(string header)
-{
-    public string Header { get; set; } = header;
-    public List<Language> Languages { get; set; } = [];
 }

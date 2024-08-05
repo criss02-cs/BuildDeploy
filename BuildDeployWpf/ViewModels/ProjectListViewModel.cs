@@ -48,6 +48,15 @@ public partial class ProjectListViewModel : BaseViewModel, IRecipient<Appearing>
     #region Commands
 
     [RelayCommand]
+    private async Task BuildProject()
+    {
+        var language = SelectedProject.Language;
+        if (language is null) return;
+        if (SelectedProject.Path is null) return;
+        await language.Build(SelectedProject.Path);
+    }
+
+    [RelayCommand]
     private async Task LoadProjects()
     {
         var projects = await DbService.Instance.GetAllProjects(x => x.LastTimeOpened, true)!;

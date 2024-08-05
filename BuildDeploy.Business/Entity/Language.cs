@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -38,4 +39,36 @@ public class Language
 
     public List<Project> Projects { get; set; }
 
+
+    public async Task Build(string projectPath)
+    {
+        var buildProcess = new Process();
+        var arguments = Arguments?.Select(x => $"--{x.Key}={x.Value} ") ?? [];
+        var psi = new ProcessStartInfo("cmd.exe")
+        {
+            RedirectStandardInput = true,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            WorkingDirectory = projectPath,
+            Arguments = $"{ExecutableName} {BuildCommand} {string.Join(" ", arguments)}"
+        };
+        buildProcess.StartInfo = psi;
+        buildProcess.Start();
+        buildProcess.OutputDataReceived += BuildProcessOnOutputDataReceived;
+        buildProcess.ErrorDataReceived += BuildProcess_ErrorDataReceived;
+        buildProcess.BeginOutputReadLine();
+        buildProcess.BeginErrorReadLine();
+        await buildProcess.WaitForExitAsync(); 
+    }
+
+    private void BuildProcess_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        Console.WriteLine(e.Data);
+    }
+
+    private void BuildProcessOnOutputDataReceived(object sender, DataReceivedEventArgs e)
+    {
+        Console.WriteLine(e.Data);
+    }
 }

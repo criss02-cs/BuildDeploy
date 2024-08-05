@@ -131,6 +131,7 @@
                     Content="Build"
                     FontFamily="OpenSansRegular"
                     FontSize="14"
+                    Command="{Binding BuildProjectCommand}"
                     Style="{StaticResource Warning}"
                     Visibility="{Binding ShowBuildButton, Converter={StaticResource BooleanToVisibilityConverter}}">
                 </winUi:Button>
@@ -144,6 +145,7 @@
                     FontFamily="OpenSansRegular"
                     FontSize="14"
                     Style="{StaticResource Success}"
+                    
                     Visibility="{Binding ShowDeployButton, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <ComboBox BorderThickness="0" SelectionChanged="Selector_OnSelectionChanged"
                           ItemsSource="{Binding FtpProfiles}" Height="32" HorizontalAlignment="Right">

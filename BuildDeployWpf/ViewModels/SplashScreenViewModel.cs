@@ -53,11 +53,6 @@ public partial class SplashScreenViewModel : BaseViewModel
 
     private async Task TryInitializeDatabase()
     {
-        //var assembly = Assembly.GetExecutingAssembly();
-        //var names = Assembly.GetExecutingAssembly().GetManifestResourceNames();
-        //await using var stream = assembly.GetManifestResourceStream("BuildDeployWpf.Properties.Resources.resources");
-        //using var reader = new StreamReader(stream);
-        //var json = await reader.ReadToEndAsync();
         var json = Resources.languages;
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         var defaultLanguages = JsonSerializer.Deserialize<List<Language>>(json, options);
@@ -75,18 +70,6 @@ public partial class SplashScreenViewModel : BaseViewModel
             UseShellExecute = false,
             CreateNoWindow = true
         };
-        //ProcessStartInfo psi = new ProcessStartInfo();
-        //psi.FileName = "dotnet";
-        //psi.Arguments = "--info";
-        //psi.RedirectStandardOutput = true;
-        //psi.UseShellExecute = false;
-
-        //Process? p = Process.Start(psi);
-        //p.OutputDataReceived += (sender, data) => {
-        //    Console.WriteLine(data.Data);
-        //};
-        //p.BeginOutputReadLine();
-        //p.WaitForExit();
         process.StartInfo = startInfo;
         process.Start();
         var output = await process.StandardOutput.ReadToEndAsync();

@@ -12,14 +12,16 @@ public class LanguagesManager
     public async Task InitDatabase(List<Language> defaultLanguages)
     {
         var languages = await DatabaseContext.Instance.Languages.ToListAsync();
-        foreach (var language in defaultLanguages)
+        foreach (var language in defaultLanguages.Where(language => languages.All(x => x.Id != language.Id)))
         {
-            if (languages.All(x => x.Id != language.Id))
-            {
-                language.Id = 0;
-                await DatabaseContext.Instance.Languages.AddAsync(language);
-            }
+            language.Id = 0;
+            await DatabaseContext.Instance.Languages.AddAsync(language);
         }
         await DatabaseContext.Instance.SaveChangesAsync();
+    }
+
+    public async Task<List<Language>> GetAllLanguages()
+    {
+        return await DatabaseContext.Instance.Languages.ToListAsync();
     }
 }

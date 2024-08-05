@@ -83,7 +83,7 @@ namespace BuildDeployWpf.Properties {
         /// <summary>
         ///   Cerca una stringa localizzata simile a [
         ///  {
-        ///    &quot;id&quot;: 0,
+        ///    &quot;id&quot;: 1,
         ///    &quot;name&quot;: &quot;C#&quot;,
         ///    &quot;executableName&quot;: &quot;dotnet&quot;,
         ///    &quot;buildCommand&quot;: &quot;dotnet publish&quot;,
@@ -91,7 +91,7 @@ namespace BuildDeployWpf.Properties {
         ///    &quot;isJavascriptFramework&quot;: false
         ///  },
         ///  {
-        ///    &quot;id&quot;: 1,
+        ///    &quot;id&quot;: 2,
         ///    &quot;name&quot;: &quot;Angular&quot;,
         ///    &quot;executableName&quot;: &quot;ng&quot;,
         ///    &quot;buildCommand&quot;: &quot;ng build&quot;,

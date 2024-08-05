@@ -43,6 +43,9 @@ public class DbService
 
     private async Task<bool> InsertNewProject(Project project)
     {
+        var cSharp = await DatabaseContext.Instance.Languages.FirstOrDefaultAsync(x => x.Name == "C#");
+        project.Language = cSharp;
+        project.LanguageId = cSharp.Id;
         DatabaseContext.Instance.Projects.Add(project);
         var result = await DatabaseContext.Instance.SaveChangesAsync();
         return result == 1;
